@@ -14,7 +14,6 @@ public class StackLinkedList {
     }
 
     protected Node head;
-    public int length;
 
     public StackLinkedList () {
         this.head = null;
@@ -22,7 +21,6 @@ public class StackLinkedList {
 
     public StackLinkedList (int value) {
         this.head = new Node(value);
-        this.length = 1;
     }
 
     public StackLinkedList (int[] array) {
@@ -35,10 +33,8 @@ public class StackLinkedList {
                 curr.next = newNode;
                 curr = newNode;
             }
-            this.length = array.length;
         } else {
             this.head = null;
-            this.length = 0;
         }
     }
 
@@ -47,14 +43,12 @@ public class StackLinkedList {
         newNode.next = this.head;
 
         this.head = newNode;
-        this.length++;
     }
 
     public int pop () {
         if (!this.isEmpty()) {
             Node temp = this.head;
             this.head = temp.next;
-            this.length--;
             return temp.value;
         }
 
@@ -63,11 +57,11 @@ public class StackLinkedList {
     }
 
     public boolean isEmpty () {
-        return this.length == 0;
+        return this.head == null;
     }
 
     public String toString () {
-        if (this.length == 0) {
+        if (this.isEmpty()) {
             return "[]";
         }
         StringBuilder str = new StringBuilder("[");
