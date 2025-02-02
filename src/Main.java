@@ -1,16 +1,16 @@
-import LinkedList.BasicLinkedList;
-import LinkedList.CircularLinkedList;
-import LinkedList.DoublyLinkedList;
-import LinkedList.StackLinkedList;
-import Recurssion.IsArraySorted;
-import Stack.DynamicStackArray;
-import Stack.IsSymbolsBalanced;
-import Stack.StackArray;
+import LinkedList.SinglyLinkedList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        IsSymbolsBalanced checker = new IsSymbolsBalanced();
+        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
 
-        System.out.println(checker.isBalanced("()(()[()])"));
+        SinglyLinkedList<Integer> linkedList = new SinglyLinkedList<>(list);
+        System.out.println(linkedList.toString());
+        System.out.println(linkedList.remove(3));
+
+        System.out.println(linkedList.toString());
     }
 }
