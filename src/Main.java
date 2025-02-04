@@ -1,3 +1,4 @@
+import Algorithms.Sorting;
 import HashTable.HashTable;
 import LinkedList.SinglyLinkedList;
 
@@ -6,16 +7,10 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        HashTable<Integer, String> hashTable = new HashTable<Integer, String>(5);
+        Integer[] arr = {10, 22, 1, 13, 100};
+        Integer[] sortedArr = Sorting.mergeSort(arr);
 
-        hashTable.add(1, "One");
-        hashTable.add(6, "Six");
-        hashTable.add(11, "Eleven");
-
-        hashTable.remove(11);
-
-        System.out.println(hashTable.get(1));
-        System.out.println(hashTable.get(6));
-        System.out.println(hashTable.get(11));
+        System.out.println(Arrays.toString(sortedArr));
+//        System.out.println(Arrays.toString(Arrays.copyOf(sortedArr, 3)));
     }
 }
