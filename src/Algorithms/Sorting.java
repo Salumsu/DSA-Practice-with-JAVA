@@ -67,12 +67,13 @@ public class Sorting {
     public static <T extends Comparable<T>> T[] insertionSort (T[] arr) {
         for (int i = 1; i < arr.length; i++) {
             int currentIndex = i;
-            while (currentIndex > 0 && arr[currentIndex].compareTo(arr[currentIndex - 1]) < 0) {
-                T temp = arr[currentIndex];
+            T currentItem = arr[currentIndex];
+            while (currentIndex > 0 && currentItem.compareTo(arr[currentIndex - 1]) < 0) {
                 arr[currentIndex] = arr[currentIndex - 1];
-                arr[currentIndex - 1] = temp;
                 currentIndex--;
             }
+
+            arr[currentIndex] = currentItem;
         }
 
         return arr;
