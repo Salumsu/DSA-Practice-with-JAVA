@@ -4,28 +4,30 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class Sorting {
+    public static <T extends Comparable<T>> T[] bubbleSort (T[] arr, boolean clone) {
+         return bubbleSort(clone ? arr.clone() : arr);
+    }
+
     public static <T extends Comparable<T>> T[] bubbleSort (T[] arr) {
         boolean isSorted = false;
-        T[] sorted = arr.clone();
 
         while (!isSorted) {
             isSorted = true;
-            for (int i = 0; i < sorted.length - 1; i++) {
-                if (sorted[i].compareTo(sorted[i + 1]) > 0) {
-                    T temp = sorted[i];
-                    sorted[i] = sorted[i + 1];
-                    sorted[i + 1] = temp;
+            for (int i = 0; i < arr.length - 1; i++) {
+                if (arr[i].compareTo(arr[i + 1]) > 0) {
+                    T temp = arr[i];
+                    arr[i] = arr[i + 1];
+                    arr[i + 1] = temp;
                     isSorted = false;
                 }
             }
         }
 
-        return sorted;
+        return arr;
     }
 
     public static <T extends Comparable<T>> T[] mergeSort (T[] arr, boolean clone) {
-        T[] newArr = clone ? arr.clone() : arr;
-        return mergeSort(newArr);
+        return mergeSort(clone ? arr.clone() : arr);
     }
 
     public static <T extends Comparable<T>> T[] mergeSort (T[] arr) {
@@ -53,6 +55,24 @@ public class Sorting {
 
         while (leftOverIndex < withLeftOver.length) {
             arr[leftOverIndex + otherIndex] = withLeftOver[leftOverIndex++];
+        }
+
+        return arr;
+    }
+
+    public static <T extends Comparable<T>> T[] insertionSort (T[] arr, boolean clone) {
+        return insertionSort(clone ? arr.clone() : arr);
+    }
+
+    public static <T extends Comparable<T>> T[] insertionSort (T[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            int currentIndex = i;
+            while (currentIndex > 0 && arr[currentIndex].compareTo(arr[currentIndex - 1]) < 0) {
+                T temp = arr[currentIndex];
+                arr[currentIndex] = arr[currentIndex - 1];
+                arr[currentIndex - 1] = temp;
+                currentIndex--;
+            }
         }
 
         return arr;
