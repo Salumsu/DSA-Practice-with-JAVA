@@ -1,4 +1,5 @@
 import Algorithms.Sorting;
+import Algorithms.Utils;
 import HashTable.HashTable;
 import LinkedList.SinglyLinkedList;
 
@@ -11,6 +12,5 @@ public class Main {
         Integer[] sortedArr = Sorting.insertionSort(arr, true);
 
         System.out.println(Arrays.toString(sortedArr));
-//        System.out.println(Arrays.toString(Arrays.copyOf(sortedArr, 3)));
     }
 }

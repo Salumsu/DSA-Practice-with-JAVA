@@ -1,8 +1,15 @@
 package Algorithms;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
+/**
+ * A utility class that provides sorting algorithms.
+ * <p>
+ * This class can only sort elements that implement {@link Comparable},
+ * such as {@link Integer}, {@link String}, or any other class that
+ * implements {@code Comparable<T>}.
+ * </p>
+ *
+ * @author Salumsu
+ */
 public class Sorting {
     public static <T extends Comparable<T>> T[] bubbleSort (T[] arr, boolean clone) {
          return bubbleSort(clone ? arr.clone() : arr);
@@ -34,8 +41,9 @@ public class Sorting {
         if (arr.length == 0 || arr.length == 1) return arr;
 
         int mid = arr.length / 2;
-        T[] left = mergeSort(Arrays.copyOfRange(arr, 0, mid));
-        T[] right = mergeSort(Arrays.copyOfRange(arr, mid, arr.length));
+        Utils.SplitArray<T> splitArray = Utils.splitArray(arr, mid);
+        T[] left = mergeSort(splitArray.left());
+        T[] right = mergeSort(splitArray.right());
 
         int leftIndex = 0;
         int rightIndex = 0;
