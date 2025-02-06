@@ -1,5 +1,7 @@
 package Algorithms;
 
+import java.util.Arrays;
+
 /**
  * A utility class that provides sorting algorithms.
  * <p>
@@ -83,6 +85,51 @@ public class Sorting {
 
             arr[currentIndex] = currentItem;
         }
+
+        return arr;
+    }
+
+    public static <T extends Comparable<T>> T[] quickSort(T[] arr, boolean clone) {
+        return quickSort(clone ? arr.clone() : arr);
+    }
+
+    public static <T extends Comparable<T>> T[] quickSort(T[] arr) {
+        if (arr.length == 0 || arr.length == 1) return arr;
+
+        return quickSort(arr, 0, arr.length - 1);
+    }
+
+    private static <T extends Comparable<T>> T[] quickSort(T[] arr, Integer start, Integer pivotIndex) {
+        if (start >= pivotIndex) return arr;
+
+        T pivot = arr[pivotIndex];
+        int left = start;
+        int right = pivotIndex - 1;
+
+        while (left <= right) {
+            while (arr[left].compareTo(pivot) < 0 && left <= right) {
+                left++;
+            }
+            while ( right >= 0 && arr[right].compareTo(pivot) > 0 && left <= right) {
+                right--;
+            }
+
+            if (right < left) {
+                break;
+            }
+
+            T temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+        }
+
+        if (left != pivotIndex) {
+            arr[pivotIndex] = arr[left];
+            arr[left] = pivot;
+        }
+
+        quickSort(arr, start, left - 1);
+        quickSort(arr, left + 1, pivotIndex);
 
         return arr;
     }
