@@ -20,4 +20,9 @@ public class Utils {
         return new SplitArray<>(left, right);
     }
 
+    public static <T extends Comparable<T>> void swap (T[] arr, Integer left, Integer right) {
+        T temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }
 }

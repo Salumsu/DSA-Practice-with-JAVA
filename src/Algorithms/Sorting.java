@@ -102,15 +102,14 @@ public class Sorting {
     private static <T extends Comparable<T>> T[] quickSort(T[] arr, Integer start, Integer pivotIndex) {
         if (start >= pivotIndex) return arr;
 
-        T pivot = arr[pivotIndex];
         int left = start;
         int right = pivotIndex - 1;
 
         while (left <= right) {
-            while (arr[left].compareTo(pivot) < 0 && left <= right) {
+            while (arr[left].compareTo(arr[pivotIndex]) <= 0 && left <= right) {
                 left++;
             }
-            while ( right >= 0 && arr[right].compareTo(pivot) > 0 && left <= right) {
+            while (right >= 0 && arr[right].compareTo(arr[pivotIndex]) >= 0 && left <= right) {
                 right--;
             }
 
@@ -118,14 +117,11 @@ public class Sorting {
                 break;
             }
 
-            T temp = arr[left];
-            arr[left] = arr[right];
-            arr[right] = temp;
+            Utils.swap(arr, left, right);
         }
 
         if (left != pivotIndex) {
-            arr[pivotIndex] = arr[left];
-            arr[left] = pivot;
+            Utils.swap(arr, left, pivotIndex);
         }
 
         quickSort(arr, start, left - 1);
@@ -133,4 +129,6 @@ public class Sorting {
 
         return arr;
     }
+
+
 }
