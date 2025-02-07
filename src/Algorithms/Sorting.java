@@ -94,8 +94,6 @@ public class Sorting {
     }
 
     public static <T extends Comparable<T>> T[] quickSort(T[] arr) {
-        if (arr.length == 0 || arr.length == 1) return arr;
-
         return quickSort(arr, 0, arr.length - 1);
     }
 
@@ -130,5 +128,30 @@ public class Sorting {
         return arr;
     }
 
+    public static <T extends Comparable<T>> T[] quickSort2(T[] arr, boolean clone) {
+        return quickSort2(clone ? arr.clone() : arr);
+    }
 
+    public static <T extends Comparable<T>> T[] quickSort2(T[] arr) {
+        return quickSort2(arr, 0, arr.length - 1);
+    }
+
+    private static <T extends Comparable<T>> T[] quickSort2(T[] arr, Integer start, Integer pivotIndex) {
+        if (start >= pivotIndex) return arr;
+
+        int j = start - 1;
+
+        for (int i = start; i < pivotIndex; i++) {
+            if (arr[i].compareTo(arr[pivotIndex]) <= 0) {
+                Utils.swap(arr, i, ++j);
+            }
+        }
+
+        Utils.swap(arr, pivotIndex, ++j);
+
+        quickSort2(arr, 0, j - 1);
+        quickSort2(arr, j + 1, pivotIndex);
+
+        return arr;
+    }
 }
