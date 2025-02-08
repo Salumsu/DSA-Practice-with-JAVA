@@ -2,8 +2,6 @@ package Heap;
 
 import Algorithms.Utils;
 
-import java.util.Arrays;
-
 public class BinaryHeap {
 
     private boolean isMin; // true = min heap, else = max heap

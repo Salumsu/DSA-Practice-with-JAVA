@@ -33,4 +33,16 @@ public class Utils {
         return first.compareTo(second) < 0 ? first : second;
     }
 
+    public static <T extends Comparable<T>> boolean shouldSwap (T first, T second) {
+        return Utils.shouldSwap(first, second, false, false);
+    }
+
+    public static <T extends Comparable<T>> boolean shouldSwap(T first, T second, boolean desc) {
+        return Utils.shouldSwap(first, second, desc, false);
+    }
+
+    public static <T extends Comparable<T>> boolean shouldSwap (T first, T second, boolean desc, boolean includeEqual) {
+        int compareResult = first.compareTo(second);
+        return desc ? compareResult < (includeEqual ? 1 : 0) : compareResult > (includeEqual ? -1 : 0);
+    }
 }
