@@ -13,6 +13,38 @@ import Heap.BinaryHeap;
  * @author Salumsu
  */
 public class Sorting {
+    public enum SortType {
+        BUBBLE,
+        MERGE,
+        INSERTION,
+        QUICKSORT,
+        QUICKSORT2,
+        SELECTION,
+        HEAP,
+    }
+
+    public static <T extends Comparable<T>> T[] sort (T[] arr, SortType type) {
+        return sort(arr, type, false, false);
+    }
+
+    public static <T extends Comparable<T>> T[] sort (T[] arr, SortType type, boolean desc) {
+        return sort(arr, type, desc, false);
+    }
+
+    public static <T extends Comparable<T>> T[] sort (T[] arr, SortType type, boolean desc, boolean clone) {
+        T[] sortedArr = switch (type) {
+            case Sorting.SortType.BUBBLE -> Sorting.bubbleSort(arr, desc, clone);
+            case Sorting.SortType.MERGE -> Sorting.mergeSort(arr, desc, clone);
+            case Sorting.SortType.INSERTION -> Sorting.insertionSort(arr, desc, clone);
+            case Sorting.SortType.QUICKSORT -> Sorting.quickSort(arr, desc, clone);
+            case Sorting.SortType.QUICKSORT2 -> Sorting.quickSort2(arr, desc, clone);
+            case Sorting.SortType.SELECTION -> Sorting.selectionSort(arr, desc, clone);
+            case Sorting.SortType.HEAP -> Sorting.heapSort(arr, desc, clone);
+        };
+
+        return sortedArr;
+    }
+
     // BUBBLE SORT
     public static <T extends Comparable<T>> T[] bubbleSort (T[] arr) {
         return bubbleSort(arr, false, false);
@@ -124,7 +156,6 @@ public class Sorting {
     public static <T extends Comparable<T>> T[] quickSort (T[] arr, boolean desc, boolean clone) {
         return doQuickSort(clone ? arr.clone() : arr, 0, arr.length - 1, desc);
     }
-
 
     private static <T extends Comparable<T>> T[] doQuickSort(T[] arr, Integer start, Integer pivotIndex, boolean desc) {
         if (start >= pivotIndex) return arr;
