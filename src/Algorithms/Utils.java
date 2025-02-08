@@ -25,4 +25,12 @@ public class Utils {
         arr[left] = arr[right];
         arr[right] = temp;
     }
+
+    public static <T extends Comparable<T>> T min (T first, T second) {
+        if (first == null || second == null) {
+            throw new NullPointerException();
+        }
+        return first.compareTo(second) < 0 ? first : second;
+    }
+
 }

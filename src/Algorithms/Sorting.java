@@ -1,5 +1,7 @@
 package Algorithms;
 
+import Heap.BinaryHeap;
+
 import java.util.Arrays;
 
 /**
@@ -94,10 +96,10 @@ public class Sorting {
     }
 
     public static <T extends Comparable<T>> T[] quickSort(T[] arr) {
-        return quickSort(arr, 0, arr.length - 1);
+        return doQuickSort(arr, 0, arr.length - 1);
     }
 
-    private static <T extends Comparable<T>> T[] quickSort(T[] arr, Integer start, Integer pivotIndex) {
+    private static <T extends Comparable<T>> T[] doQuickSort(T[] arr, Integer start, Integer pivotIndex) {
         if (start >= pivotIndex) return arr;
 
         int left = start;
@@ -122,8 +124,8 @@ public class Sorting {
             Utils.swap(arr, left, pivotIndex);
         }
 
-        quickSort(arr, start, left - 1);
-        quickSort(arr, left + 1, pivotIndex);
+        doQuickSort(arr, start, left - 1);
+        doQuickSort(arr, left + 1, pivotIndex);
 
         return arr;
     }
@@ -133,10 +135,10 @@ public class Sorting {
     }
 
     public static <T extends Comparable<T>> T[] quickSort2(T[] arr) {
-        return quickSort2(arr, 0, arr.length - 1);
+        return doQuickSort2(arr, 0, arr.length - 1);
     }
 
-    private static <T extends Comparable<T>> T[] quickSort2(T[] arr, Integer start, Integer pivotIndex) {
+    private static <T extends Comparable<T>> T[] doQuickSort2(T[] arr, Integer start, Integer pivotIndex) {
         if (start >= pivotIndex) return arr;
 
         int j = start - 1;
@@ -149,8 +151,48 @@ public class Sorting {
 
         Utils.swap(arr, pivotIndex, ++j);
 
-        quickSort2(arr, 0, j - 1);
-        quickSort2(arr, j + 1, pivotIndex);
+        doQuickSort2(arr, 0, j - 1);
+        doQuickSort2(arr, j + 1, pivotIndex);
+
+        return arr;
+    }
+
+    public static <T extends Comparable<T>> T[] selectionSort (T[] arr, boolean clone) {
+        return selectionSort(clone ? arr.clone() : arr);
+    }
+
+    public static <T extends Comparable<T>> T[] selectionSort (T[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int candidateIndex = i;
+
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[j].compareTo(arr[candidateIndex]) < 0) {
+                    candidateIndex = j;
+                }
+            }
+
+            Utils.swap(arr, candidateIndex, i);
+        }
+
+        return arr;
+    }
+
+    public static <T extends Comparable<T>> T[] heapSort (T[] arr, boolean clone) {
+        return heapSort(clone ? arr.clone() : arr);
+    }
+    public static <T extends Comparable<T>> T[] heapSort (T[] arr) {
+        if (arr.length == 0 || arr.length == 1) return arr;
+
+        BinaryHeap binaryHeap = new BinaryHeap(false);
+
+        binaryHeap.heapify(arr);
+        int sortedCount = 1;
+
+        while (sortedCount < arr.length) {
+            Utils.swap(arr, 0, arr.length - sortedCount);
+            binaryHeap.siftDown(arr, 0, arr.length - sortedCount);
+            sortedCount++;
+        }
 
         return arr;
     }
