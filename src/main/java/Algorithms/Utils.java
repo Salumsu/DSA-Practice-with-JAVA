@@ -2,7 +2,12 @@ package Algorithms;
 
 import java.util.Arrays;
 
-public class Utils {
+public final class Utils {
+
+    private Utils() {
+        throw new UnsupportedOperationException("Utility class - cannot be instantiated");
+    }
+
     public record SplitArray<T>(T[] left, T[] right){}
 
     public static <T extends Comparable<T>> SplitArray<T> splitArray (T[] arr, Integer mid) {

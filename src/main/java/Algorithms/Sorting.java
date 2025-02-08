@@ -133,7 +133,7 @@ public class Sorting {
         for (int i = 1; i < newArr.length; i++) {
             int currentIndex = i;
             T currentItem = newArr[currentIndex];
-            while (currentIndex > 0 && Utils.shouldSwap(currentItem, arr[currentIndex - 1], !desc)) {
+            while (currentIndex > 0 && Utils.shouldSwap(currentItem, newArr[currentIndex - 1], !desc)) {
                 newArr[currentIndex] = newArr[currentIndex - 1];
                 currentIndex--;
             }
@@ -238,7 +238,7 @@ public class Sorting {
             int candidateIndex = i;
 
             for (int j = i + 1; j < newArr.length; j++) {
-                if (Utils.shouldSwap(newArr[j], newArr[candidateIndex], desc)) {
+                if (Utils.shouldSwap(newArr[j], newArr[candidateIndex], !desc)) {
                     candidateIndex = j;
                 }
             }
@@ -262,7 +262,7 @@ public class Sorting {
         T[] newArr = clone ? arr.clone() : arr;
         if (newArr.length == 0 || newArr.length == 1) return newArr;
 
-        BinaryHeap binaryHeap = new BinaryHeap(!desc);
+        BinaryHeap binaryHeap = new BinaryHeap(desc);
 
         binaryHeap.heapify(newArr);
         int sortedCount = 1;
