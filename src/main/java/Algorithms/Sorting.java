@@ -25,14 +25,44 @@ public class Sorting {
         HEAP,
     }
 
+    /**
+     * Sorts the given array in ascending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param type  The sorting algorithm to use (defined by an {@code Sorting.SortType}).
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] sort (T[] arr, SortType type) {
         return sort(arr, type, false, false);
     }
 
+    /**
+     * Sorts the given array in ascending or descending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param type  The sorting algorithm to use (defined by an {@link SortType}).
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] sort (T[] arr, SortType type, boolean desc) {
         return sort(arr, type, desc, false);
     }
 
+    /**
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param type  The sorting algorithm to use (defined by an {@link SortType}).
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @param clone  {@code true} to sort a copy of the array, leaving the original unchanged;
+     *               {@code false} to sort the array in place.
+     * @return      The sorted array (sorted in place).
+     */
     public static <T extends Comparable<T>> T[] sort (T[] arr, SortType type, boolean desc, boolean clone) {
         T[] sortedArr = switch (type) {
             case Sorting.SortType.BUBBLE -> Sorting.bubbleSort(arr, desc, clone);
@@ -47,15 +77,47 @@ public class Sorting {
         return sortedArr;
     }
 
-    // BUBBLE SORT
+
+    /**
+     * BUBBLE SORT <br /><br />
+     * Sorts the given array in ascending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] bubbleSort (T[] arr) {
         return bubbleSort(arr, false, false);
     }
 
+    /**
+     * BUBBLE SORT <br /><br />
+     * Sorts the given array in ascending or descending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] bubbleSort (T[] arr, boolean desc) {
         return bubbleSort(arr, desc, false);
     }
 
+    /**
+     * BUBBLE SORT <br /><br />
+     * Sorts the given array in ascending or descending order, with an option to clone the array.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
+     *              {@code false} to sort the array in place.
+     * @return      The sorted array (in-place or copied based on {@code clone}).
+     */
     public static <T extends Comparable<T>> T[] bubbleSort (T[] arr, boolean desc, boolean clone) {
         T[] newArr = clone ? arr.clone() : arr;
         if (newArr.length == 0 || newArr.length == 1) return newArr;
@@ -75,15 +137,46 @@ public class Sorting {
         return newArr;
     }
 
-    // MERGE SORT
+    /**
+     * MERGE SORT <br /><br />
+     * Sorts the given array in ascending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] mergeSort (T[] arr) {
         return mergeSort(arr, false, false);
     }
 
+    /**
+     * MERGE SORT <br /><br />
+     * Sorts the given array in ascending or descending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] mergeSort (T[] arr, boolean desc) {
         return mergeSort(arr, desc, false);
     }
 
+    /**
+     * MERGE SORT <br /><br />
+     * Sorts the given array in ascending or descending order, with an option to clone the array.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
+     *              {@code false} to sort the array in place.
+     * @return      The sorted array (in-place or copied based on {@code clone}).
+     */
     public static <T extends Comparable<T>> T[] mergeSort (T[] arr, boolean desc, boolean clone) {
         return doMergeSort(clone ? arr.clone() : arr, desc);
     }
@@ -119,15 +212,46 @@ public class Sorting {
         return arr;
     }
 
-    // INSERTION SORT
+    /**
+     * INSERTION SORT <br /><br />
+     * Sorts the given array in ascending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] insertionSort (T[] arr) {
         return insertionSort(arr, false, false);
     }
 
+    /**
+     * INSERTION SORT <br /><br />
+     * Sorts the given array in ascending or descending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] insertionSort (T[] arr, boolean desc) {
         return insertionSort(arr, desc, false);
     }
 
+    /**
+     * INSERTION SORT <br /><br />
+     * Sorts the given array in ascending or descending order, with an option to clone the array.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
+     *              {@code false} to sort the array in place.
+     * @return      The sorted array (in-place or copied based on {@code clone}).
+     */
     public static <T extends Comparable<T>> T[] insertionSort (T[] arr, boolean desc, boolean clone) {
         T[] newArr = clone ? arr.clone() : arr;
         if (newArr.length == 0 || newArr.length == 1) return newArr;
@@ -146,15 +270,46 @@ public class Sorting {
         return newArr;
     }
 
-    // QUICK SORT
+    /**
+     * QUICK SORT <br /><br />
+     * Sorts the given array in ascending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] quickSort(T[] arr) {
         return quickSort(arr, false, false);
     }
 
+    /**
+     * QUICK SORT <br /><br />
+     * Sorts the given array in ascending or descending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] quickSort(T[] arr, boolean desc) {
         return quickSort(arr, desc, false);
     }
 
+    /**
+     * QUICK SORT <br /><br />
+     * Sorts the given array in ascending or descending order, with an option to clone the array.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
+     *              {@code false} to sort the array in place.
+     * @return      The sorted array (in-place or copied based on {@code clone}).
+     */
     public static <T extends Comparable<T>> T[] quickSort (T[] arr, boolean desc, boolean clone) {
         return doQuickSort(clone ? arr.clone() : arr, 0, arr.length - 1, desc);
     }
@@ -191,15 +346,49 @@ public class Sorting {
         return arr;
     }
 
-    // QUICK SORT 2
+    /**
+     * QUICK SORT 2 <br /><br />
+     * This is just a different implementation of {@code quickSort} <br /> <br />
+     * Sorts the given array in ascending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] quickSort2(T[] arr) {
         return quickSort2(arr, false, false);
     }
 
+    /**
+     * QUICK SORT 2 <br /><br />
+     * This is just a different implementation of {@code quickSort} <br /> <br />
+     * Sorts the given array in ascending or descending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] quickSort2(T[] arr, boolean desc) {
         return quickSort2(arr, desc, false);
     }
 
+    /**
+     * QUICK SORT 2 <br /><br />
+     * This is just a different implementation of {@code quickSort} <br /> <br />
+     * Sorts the given array in ascending or descending order, with an option to clone the array.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
+     *              {@code false} to sort the array in place.
+     * @return      The sorted array (in-place or copied based on {@code clone}).
+     */
     public static <T extends Comparable<T>> T[] quickSort2 (T[] arr, boolean desc, boolean clone) {
         return doQuickSort2(clone ? arr.clone() : arr, 0, arr.length - 1, desc);
     }
@@ -223,15 +412,46 @@ public class Sorting {
         return arr;
     }
 
-    // SELECTION SORT
+    /**
+     * SELECTION SORT <br /><br />
+     * Sorts the given array in ascending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] selectionSort (T[] arr) {
         return selectionSort(arr, false, false);
     }
 
+    /**
+     * SELECTION SORT <br /><br />
+     * Sorts the given array in ascending or descending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] selectionSort (T[] arr, boolean desc) {
         return selectionSort(arr, desc, false);
     }
 
+    /**
+     * SELECTION SORT <br /><br />
+     * Sorts the given array in ascending or descending order, with an option to clone the array.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
+     *              {@code false} to sort the array in place.
+     * @return      The sorted array (in-place or copied based on {@code clone}).
+     */
     public static <T extends Comparable<T>> T[] selectionSort (T[] arr, boolean desc, boolean clone) {
         T[] newArr = clone ? arr.clone() : arr;
         if (newArr.length == 0 || newArr.length == 1) return newArr;
@@ -251,15 +471,46 @@ public class Sorting {
         return newArr;
     }
 
-    // HEAP SORT
+    /**
+     * HEAP SORT <br /><br />
+     * Sorts the given array in ascending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] heapSort (T[] arr) {
         return heapSort(arr, false, false);
     }
 
+    /**
+     * HEAP SORT <br /><br />
+     * Sorts the given array in ascending or descending order.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @return      The sorted array (sorted in place).
+     *
+     * <b>Note:</b> This method modifies the input array.
+     */
     public static <T extends Comparable<T>> T[] heapSort (T[] arr, boolean desc) {
         return heapSort(arr, desc, false);
     }
 
+    /**
+     * HEAP SORT <br /><br />
+     * Sorts the given array in ascending or descending order, with an option to clone the array.
+     *
+     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param arr   The array to be sorted.
+     * @param desc  {@code true} for descending order, {@code false} for ascending.
+     * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
+     *              {@code false} to sort the array in place.
+     * @return      The sorted array (in-place or copied based on {@code clone}).
+     */
     public static <T extends Comparable<T>> T[] heapSort (T[] arr, boolean desc, boolean clone) {
         T[] newArr = clone ? arr.clone() : arr;
         if (newArr.length == 0 || newArr.length == 1) return newArr;

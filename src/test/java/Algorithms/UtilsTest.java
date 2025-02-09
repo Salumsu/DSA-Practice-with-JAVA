@@ -144,4 +144,20 @@ class UtilsTest {
         boolean output = Utils.shouldSwap(first, second, desc);
         assertEquals(expected, output);
     }
+
+    static Stream<Arguments> equalTestCases() {
+        return Stream.of(
+                Arguments.of(1, 2, false),
+                Arguments.of(1, 1, true),
+                Arguments.of(2, 1, false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("equalTestCases")
+    <T extends Comparable<T>> void testEqual (T first, T second, boolean expected) {
+        boolean output = Utils.equals(first, second);
+
+        assertEquals(expected, output);
+    }
 }
