@@ -9,7 +9,7 @@ public class Main {
                 4, 6, 6, 7, 4, 10, 10, 2, 5, 3, 8, 6, 9, 7, 1
         };
 
-        Integer[] sorted = Sorting.insertionSort(arr, true, true);
+        Integer[] sorted = Sorting.mergeSort(arr, false, true);
 
         System.out.println(Arrays.toString(arr));
         System.out.println(Arrays.toString(sorted));

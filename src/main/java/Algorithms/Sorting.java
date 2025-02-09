@@ -2,6 +2,8 @@ package Algorithms;
 
 import Heap.BinaryHeap;
 
+import java.util.Arrays;
+
 /**
  * A utility class that provides sorting algorithms.
  * <p>
@@ -89,7 +91,7 @@ public class Sorting {
     private static <T extends Comparable<T>> T[] doMergeSort (T[] arr, boolean desc) {
         if (arr.length == 0 || arr.length == 1) return arr;
 
-        int mid = arr.length / 2;
+        int mid = arr.length / 2 - 1;
         Utils.SplitArray<T> splitArray = Utils.splitArray(arr, mid);
         T[] left = doMergeSort(splitArray.left(), desc);
         T[] right = doMergeSort(splitArray.right(), desc);

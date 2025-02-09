@@ -19,13 +19,29 @@ public final class Utils {
             throw new IllegalArgumentException("Invalid mid index");
         }
 
-        T[] left = Arrays.copyOfRange(arr, 0, mid);
-        T[] right = Arrays.copyOfRange(arr, includeMid ? mid : mid + 1, arr.length);
+        T[] left;
+        T[] right;
+
+        if (isEmpty(arr)) {
+            left = Arrays.copyOfRange(arr, 0, 0);
+            right = Arrays.copyOfRange(arr, 0, 0);
+        } else {
+            left = Arrays.copyOfRange(arr, 0, includeMid ? mid + 1 : mid);
+            right = Arrays.copyOfRange(arr, mid + 1, arr.length);
+        }
 
         return new SplitArray<>(left, right);
     }
 
+    public static <T extends Comparable<T>> boolean isEmpty (T[] arr) {
+        return arr.length == 0;
+    }
+
     public static <T extends Comparable<T>> void swap (T[] arr, Integer left, Integer right) {
+        if (left >= arr.length || right >= arr.length) {
+            throw new IndexOutOfBoundsException();
+        }
+
         T temp = arr[left];
         arr[left] = arr[right];
         arr[right] = temp;
