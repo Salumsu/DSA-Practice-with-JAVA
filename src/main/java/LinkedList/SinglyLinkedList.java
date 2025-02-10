@@ -10,6 +10,7 @@ public class SinglyLinkedList<T> {
     public int size() {
         return this.length;
     }
+    public boolean isEmpty() {return this.head == null;}
 
     public SinglyLinkedList () {
         this.head = null;
@@ -93,6 +94,8 @@ public class SinglyLinkedList<T> {
             prev.setNext(null);
         }
 
+        this.length--;
+
         return curr.getValue();
     }
 
@@ -118,6 +121,8 @@ public class SinglyLinkedList<T> {
             prev.setNext(null);
         }
 
+        this.length -= count;
+
         while (curr != null) {
             list.add(curr.getValue());
             curr = curr.getNext();
@@ -133,6 +138,7 @@ public class SinglyLinkedList<T> {
 
         this.head = this.getHead().getNext();
 
+        this.length--;
         return value;
     }
 
@@ -148,6 +154,8 @@ public class SinglyLinkedList<T> {
             this.head = this.getHead().getNext();
             currCount++;
         }
+
+        this.length -= count;
 
         return list;
     }
@@ -165,6 +173,14 @@ public class SinglyLinkedList<T> {
 
         this.length++;
         curr.setNext(node);
+    }
+
+    public void prepend (T value) {
+        SinglyLinkedListNode<T> node = new SinglyLinkedListNode<>(value);
+
+        node.setNext(this.getHead());
+        this.head = node;
+        this.length++;
     }
 
     public void insert (T value, Integer index) {
@@ -212,6 +228,8 @@ public class SinglyLinkedList<T> {
         } else {
             prev.setNext(curr.getNext());
         }
+
+        this.length--;
 
         if (curr != null) {
             return curr.getValue();

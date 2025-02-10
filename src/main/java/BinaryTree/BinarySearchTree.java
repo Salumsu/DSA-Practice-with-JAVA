@@ -1,6 +1,7 @@
 package BinaryTree;
 
 import Algorithms.Sorting;
+import Queue.QueueAL;
 
 import java.util.ArrayList;
 
@@ -232,30 +233,30 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public ArrayList<T> levelOrderTraversal (boolean print) {
         ArrayList<T> arrayList = print ? null : new ArrayList<>();
         // TODO: Use your own implementation of Queue
-        ArrayList<BinarySearchTreeNode<T>> queue = new ArrayList<>();
+        QueueAL<BinarySearchTreeNode<T>> queue = new QueueAL<>();
 
         if (this.head == null) {
             if (print) {
                 System.out.println("The binary search three is empty.");
             }
         } else {
-            queue.add(this.head);
+            queue.enqueue(this.head);
             doLevelOrderTraversal(arrayList, queue, print);
         }
 
         return arrayList;
     }
 
-    private void doLevelOrderTraversal (ArrayList<T> arrayList, ArrayList<BinarySearchTreeNode<T>> queue, boolean print) {
+    private void doLevelOrderTraversal (ArrayList<T> arrayList, QueueAL<BinarySearchTreeNode<T>> queue, boolean print) {
         if (queue.isEmpty()) return;
-        ArrayList<BinarySearchTreeNode<T>> tempQueue = new ArrayList<>();
+        QueueAL<BinarySearchTreeNode<T>> tempQueue = new QueueAL<>();
         while (!queue.isEmpty()) {
-            BinarySearchTreeNode<T> node = queue.removeLast();
+            BinarySearchTreeNode<T> node = queue.dequeue();
             if (node.getLeft() != null) {
-                tempQueue.addFirst(node.getLeft());
+                tempQueue.enqueue(node.getLeft());
             }
             if (node.getRight() != null) {
-                tempQueue.addFirst(node.getRight());
+                tempQueue.enqueue(node.getRight());
             }
             if (print) {
                 System.out.println(node.getValue());
@@ -264,7 +265,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }
         }
 
-        queue.addAll(tempQueue);
+        queue.merge(tempQueue);
         doLevelOrderTraversal(arrayList, queue, print);
     }
 }
