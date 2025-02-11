@@ -54,7 +54,7 @@ public class StackAL<T> {
         return this.arrayList.getFirst();
     }
 
-    public ArrayList<T> getList() {
+    public ArrayList<T> toArrayList() {
         return this.arrayList;
     }
 }

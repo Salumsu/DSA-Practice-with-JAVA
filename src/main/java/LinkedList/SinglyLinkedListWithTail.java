@@ -1,61 +1,19 @@
 package LinkedList;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-class SinglyLinkedListNode <T> {
-    private T value;
-    private SinglyLinkedListNode<T> next;
+public class SinglyLinkedListWithTail<T> extends SinglyLinkedList<T> {
+    private SinglyLinkedListNode<T> tail = null;
 
-    public SinglyLinkedListNode (T value) {
-        this.value = value;
-        this.next = null;
+    public SinglyLinkedListWithTail () {
+        super();
     }
 
-    public SinglyLinkedListNode (T value, SinglyLinkedListNode<T> next) {
-        this.value = value;
-        this.next = next;
+    public SinglyLinkedListWithTail (T value) {
+        super(value);
     }
 
-    public T getValue () {
-        return this.value;
-    }
-
-    public void setValue (T value) {
-        this.value = value;
-    }
-
-    public SinglyLinkedListNode<T> getNext() {
-        return this.next;
-    }
-
-    public void setNext(SinglyLinkedListNode<T> next) {
-        this.next = next;
-    }
-}
-
-
-public class SinglyLinkedList<T> {
-
-    protected SinglyLinkedListNode<T> head;
-    protected int length;
-
-    public int size() {
-        return this.length;
-    }
-    public boolean isEmpty() {return this.head == null;}
-
-    public SinglyLinkedList () {
-        this.head = null;
-        this.length = 0;
-    }
-
-    public SinglyLinkedList (T value) {
-        this.head = new SinglyLinkedListNode<T>(value);
-        this.length = 1;
-    }
-
-    public SinglyLinkedList (T[] values) {
+    public SinglyLinkedListWithTail (T[] values) {
         this.head = null;
         if (values.length == 0) {
             this.length = 0;
@@ -86,33 +44,17 @@ public class SinglyLinkedList<T> {
             curr = curr.getNext();
             this.length++;
         }
+
+        this.tail = curr;
     }
 
-    public T getHead() {
+    public T getTail () {
         this.throwErrorWhenListIsEmpty();
 
-        return this.head.getValue();
+        return this.tail.getValue();
     }
 
-    public T get (Integer index) {
-        this.throwErrorWhenListIsEmpty();
-
-        SinglyLinkedListNode<T> curr = head;
-
-        int currIndex = 0;
-
-        while (curr != null && currIndex < index) {
-            curr = curr.getNext();
-            currIndex++;
-        }
-
-        if (curr == null) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        return curr.getValue();
-    }
-
+    @Override
     public T pop () {
         this.throwErrorWhenListIsEmpty();
 
@@ -127,6 +69,7 @@ public class SinglyLinkedList<T> {
         if (prev == null) {
             this.head = null;
         } else {
+            this.tail = prev;
             prev.setNext(null);
         }
 
@@ -135,6 +78,7 @@ public class SinglyLinkedList<T> {
         return curr.getValue();
     }
 
+    @Override
     public ArrayList<T> pop (Integer count) {
         this.throwErrorWhenListIsEmpty();
         this.throwErrorWhenCountIsGreaterThanLength(count);
@@ -153,7 +97,9 @@ public class SinglyLinkedList<T> {
 
         if (prev == null) {
             this.head = null;
+            this.tail = null;
         } else {
+            this.tail = prev;
             prev.setNext(null);
         }
 
@@ -167,35 +113,7 @@ public class SinglyLinkedList<T> {
         return list;
     }
 
-    public T popHead () {
-        this.throwErrorWhenListIsEmpty();
-
-        T value = this.head.getValue();
-
-        this.head = this.head.getNext();
-
-        this.length--;
-        return value;
-    }
-
-    public ArrayList<T> popHead (Integer count) {
-        this.throwErrorWhenListIsEmpty();
-        this.throwErrorWhenCountIsGreaterThanLength(count);
-
-        ArrayList<T> list = new ArrayList<>();
-        int currCount = 0;
-
-        while (currCount < (count)) {
-            list.add(this.head.getValue());
-            this.head = this.head.getNext();
-            currCount++;
-        }
-
-        this.length -= count;
-
-        return list;
-    }
-
+    @Override
     public void append (T value) {
         SinglyLinkedListNode<T> node = new SinglyLinkedListNode<>(value);
         if (this.head == null) {
@@ -205,20 +123,26 @@ public class SinglyLinkedList<T> {
             while (curr.getNext() != null) {
                 curr = curr.getNext();
             }
-
             curr.setNext(node);
         }
         this.length++;
+        this.tail = node;
     }
 
+    @Override
     public void prepend (T value) {
         SinglyLinkedListNode<T> node = new SinglyLinkedListNode<>(value);
+
+        if (this.head == null) {
+            this.tail = node;
+        }
 
         node.setNext(this.head);
         this.head = node;
         this.length++;
     }
 
+    @Override
     public void insert (T value, Integer index) {
         this.throwErrorWhenIndexOutOfBounds(index - 1);
 
@@ -240,11 +164,16 @@ public class SinglyLinkedList<T> {
             return;
         }
 
+        if (index == this.length) {
+            this.tail = node;
+        }
+
         this.length++;
         node.setNext(curr);
         prev.setNext(node);
     }
 
+    @Override
     public T remove (Integer index) {
         this.throwErrorWhenListIsEmpty();
         this.throwErrorWhenIndexOutOfBounds(index);
@@ -266,75 +195,16 @@ public class SinglyLinkedList<T> {
         }
 
         this.length--;
+        if (index == this.length) {
+            this.tail = prev;
+        }
+
 
         if (curr != null) {
+
             return curr.getValue();
         }
 
         return null;
-    }
-
-    protected void throwErrorWhenIndexOutOfBounds (Integer index) {
-        if (index >= this.size()) {
-            throw new IndexOutOfBoundsException();
-        }
-    }
-
-    protected void throwErrorWhenListIsEmpty () {
-        if (this.head == null) {
-            throw new NullPointerException("The list is empty");
-        }
-    }
-
-    protected void throwErrorWhenCountIsGreaterThanLength (Integer count) {
-        if (count > this.size()) {
-            throw new IndexOutOfBoundsException("Count too high. Not enough nodes.");
-        }
-    }
-
-    public ArrayList<T> toArrayList () {
-        ArrayList<T> arrayList = new ArrayList<>();
-
-        SinglyLinkedListNode<T> curr = this.head;
-
-        while (curr != null) {
-            arrayList.add(curr.getValue());
-            curr = curr.getNext();
-        }
-
-        return arrayList;
-    }
-
-    public T[] toArray (Class<T> clazz) {
-        @SuppressWarnings("unchecked")
-        T[] list = (T[]) Array.newInstance(clazz, this.length);
-
-        SinglyLinkedListNode<T> curr = this.head;
-
-        for (int i = 0; i < this.length; i++) {
-            list[i] = curr.getValue();
-            curr = curr.getNext();
-        }
-
-        return list;
-    }
-
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("[");
-
-        SinglyLinkedListNode<T> curr = this.head;
-
-        while (curr != null) {
-            stringBuilder.append(curr.getValue());
-            curr = curr.getNext();
-
-            if (curr != null) {
-                stringBuilder.append(", ");
-            }
-        }
-
-        stringBuilder.append("]");
-
-        return stringBuilder.toString();
     }
 }

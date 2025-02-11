@@ -1,6 +1,5 @@
-package BinaryTree;
+package Trees;
 
-import Algorithms.Sorting;
 import Queue.QueueAL;
 
 import java.util.ArrayList;

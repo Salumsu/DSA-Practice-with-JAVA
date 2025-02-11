@@ -1,22 +1,24 @@
 package Queue;
 
+import LinkedList.SinglyLinkedListWithTail;
+
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class QueueAL <T> {
-    private ArrayList<T> arrayList;
+public class QueueLL <T> {
+    private SinglyLinkedListWithTail<T> list;
 
-    public QueueAL () {
-        this.arrayList = new ArrayList<>();
+    public QueueLL () {
+        this.list = new SinglyLinkedListWithTail<>();
     }
 
-    public QueueAL (T value) {
+    public QueueLL (T value) {
         this();
 
         this.enqueue(value);
     }
 
-    public QueueAL(T[] values) {
+    public QueueLL(T[] values) {
         this();
 
         for (T value: values) {
@@ -25,15 +27,15 @@ public class QueueAL <T> {
     }
 
     public int size () {
-        return this.arrayList.size();
+        return this.list.size();
     }
 
     public boolean isEmpty() {
-        return this.arrayList.isEmpty();
+        return this.list.isEmpty();
     }
 
     public void enqueue (T value) {
-        this.arrayList.addLast(value);
+        this.list.append(value);
     }
 
     public T dequeue() {
@@ -41,7 +43,7 @@ public class QueueAL <T> {
             throw new EmptyStackException();
         }
 
-        return this.arrayList.removeFirst();
+        return this.list.popHead();
     }
 
     public T peek() {
@@ -49,7 +51,7 @@ public class QueueAL <T> {
             throw new EmptyStackException();
         }
 
-        return this.arrayList.getFirst();
+        return this.list.get(0);
     }
 
     public T rear() {
@@ -57,14 +59,10 @@ public class QueueAL <T> {
             throw new EmptyStackException();
         }
 
-        return this.arrayList.getLast();
-    }
-
-    public void merge (QueueAL<T> other) {
-        this.arrayList.addAll(other.toArrayList());
+        return this.list.getTail();
     }
 
     public ArrayList<T> toArrayList() {
-        return this.arrayList;
+        return this.list.toArrayList();
     }
 }

@@ -54,7 +54,7 @@ public class StackLL<T> {
         return this.list.get(0);
     }
 
-    public ArrayList<T> getList() {
+    public ArrayList<T> toArrayList() {
         return this.list.toArrayList();
     }
 }
