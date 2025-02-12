@@ -1,56 +1,12 @@
-package Trees;
+package Trees.BinarySearchTree;
 
 import Queue.QueueAL;
 
 import java.util.ArrayList;
-
-class BinarySearchTreeNode <T extends Comparable<T>> {
-    private T value;
-    private BinarySearchTreeNode<T> left;
-    private BinarySearchTreeNode<T> right;
-
-    public BinarySearchTreeNode(T value) {
-        this.value = value;
-        this.left = null;
-        this.right = null;
-    }
-
-    public T getValue () {
-        return this.value;
-    }
-
-    public void setValue (T value) {
-        this.value = value;
-    }
-
-    public BinarySearchTreeNode<T> getLeft () {
-        return this.left;
-    }
-
-    public void setLeft (BinarySearchTreeNode<T> left) {
-        this.left = left;
-    }
-
-    public void setLeft (T value) {
-        this.left = new BinarySearchTreeNode<>(value);
-    }
-
-    public BinarySearchTreeNode<T> getRight () {
-        return this.right;
-    }
-
-    public void setRight (BinarySearchTreeNode<T> right) {
-        this.right = right;
-    }
-
-    public void setRight (T value) {
-        this.right = new BinarySearchTreeNode<>(value);
-    }
-}
+import java.util.EmptyStackException;
 
 public class BinarySearchTree<T extends Comparable<T>> {
-    BinarySearchTreeNode<T> head;
-    int count;
+    protected BinarySearchTreeNode<T> head;
 
     public BinarySearchTree () {
         this.head = null;
@@ -65,8 +21,8 @@ public class BinarySearchTree<T extends Comparable<T>> {
             this.head = null;
         }
 
-        for (int i = 0; i < values.length; i++) {
-            this.insert(values[i]);
+        for (T value: values) {
+            this.insert(value);
         }
     }
 
@@ -102,6 +58,123 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 this.doInsert(curr.getLeft(), value);
             }
         }
+    }
+
+    public BinarySearchTreeNode<T> search(T value) {
+        if (this.head == null) {
+            return null;
+        }
+
+        return this.doSearch(value, this.head);
+    }
+
+    private BinarySearchTreeNode<T> doSearch (T value, BinarySearchTreeNode<T> curr) {
+        if (curr == null) return null;
+        int compareResult = curr.getValue().compareTo(value);
+        if (compareResult == 0) {
+            return curr;
+        } else if (compareResult > 0) {
+            return doSearch(value, curr.getLeft());
+        } else {
+            return doSearch(value, curr.getRight());
+        }
+    }
+
+    public BinarySearchTreeNode<T> remove(T value) {
+        if (this.head == null) {
+            return null;
+        }
+
+        return this.doRemove(null, this.head, value, false);
+    }
+
+    private BinarySearchTreeNode<T> doRemove(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> curr, T value, boolean isRight) {
+        int compareResult = curr.getValue().compareTo(value);
+        if (compareResult != 0) {
+            BinarySearchTreeNode<T> searchNode = null;
+            boolean _isRight = false;
+            if (compareResult < 0) {
+                searchNode = curr.getRight();
+                _isRight = true;
+            } else {
+                searchNode = curr.getLeft();
+            }
+
+            if (searchNode != null) {
+                return this.doRemove(curr, searchNode, value, _isRight);
+            }
+            return null;
+        }
+
+        if (curr.getRight() != null && curr.getLeft() != null) {
+            SuccPredReturn<T> successor = this.getInorderSuccessor(curr, curr.getRight());
+
+            if (curr == successor.parent()) {
+                curr.setRight(successor.parent().getRight().getRight());
+            } else {
+                successor.parent().removeLeft();
+            }
+            T val = curr.getValue();
+            curr.setValue(successor.node().getValue());
+
+            successor.node().setValue(val);
+
+            return successor.node();
+        } else if (curr.getRight() != null || curr.getLeft() != null) {
+            BinarySearchTreeNode<T> right = curr.getRight() != null ? curr.getRight() : curr.getLeft();
+            if (parent == null) {
+                this.head = right;
+            } else if (isRight) {
+                parent.setRight(right);
+            } else {
+                parent.setLeft(right);
+            }
+        } else {
+            if (parent == null) {
+                this.head = null;
+            } else if (isRight) {
+                parent.removeRight();
+            } else {
+                parent.removeLeft();
+            }
+        }
+        return curr;
+    }
+
+    /**
+     * A record representing a node and its parent in the BST.
+     *
+     * @param parent The parent of the found node.
+     * @param node   The found node (either successor or predecessor).
+     */
+    private record SuccPredReturn <T extends Comparable<T>>(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> node) {}
+
+    /**
+     * Finds the inorder successor of a given node.
+     * The inorder successor is the leftmost node in the right subtree.
+     *
+     * @param parent The node being removed, from which the search starts.
+     * @param curr   The root of the right subtree.
+     * @return A {@code SuccPredReturn} containing the inorder successor and its parent.
+     */
+    private SuccPredReturn<T> getInorderSuccessor(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> curr) {
+        if (curr.getLeft() == null) return new SuccPredReturn<>(parent, curr);
+
+        return getInorderSuccessor(curr, curr.getLeft());
+    }
+
+    /**
+     * Finds the inorder predecessor of a given node.
+     * The inorder predecessor is the rightmost node in the left subtree.
+     *
+     * @param parent The node being removed, from which the search starts.
+     * @param curr   The root of the left subtree.
+     * @return A {@code SuccPredReturn} containing the inorder predecessor and its parent.
+     */
+    private SuccPredReturn<T> getInorderPredecessor(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> curr) {
+        if (curr.getRight() == null) return new SuccPredReturn<>(parent, curr);
+
+        return getInorderPredecessor(curr, curr.getRight());
     }
 
     /**

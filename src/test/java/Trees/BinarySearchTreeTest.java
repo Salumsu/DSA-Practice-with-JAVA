@@ -1,11 +1,14 @@
 package Trees;
 
+import Trees.BinarySearchTree.BinarySearchTree;
+import Trees.BinarySearchTree.BinarySearchTreeNode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +28,121 @@ class BinarySearchTreeTest {
         ArrayList<Integer> result = bst.inOrderTraversal();
 
         assertEquals(result.getFirst(), 1);
+    }
+
+    static Stream<Arguments> searchCases() {
+        return Stream.of(
+                Arguments.of(new Integer[]{2, 1, 3}, new Integer[]{1, 2, 3, 4}, new Integer[]{1, 2, 3, null}),
+                Arguments.of(new Integer[]{}, new Integer[]{1, 2, 3}, new Integer[]{null, null, null}),
+                Arguments.of(new Integer[]{5}, new Integer[]{5, 6}, new Integer[]{5, null}),
+                Arguments.of(new Integer[]{5, 4, 3, 2, 1}, new Integer[]{1, 3, 5, 6}, new Integer[]{1, 3, 5, null}),
+                Arguments.of(new Integer[]{1, 2, 3, 4, 5}, new Integer[]{1, 3, 5, 6}, new Integer[]{1, 3, 5, null}),
+                Arguments.of(new Integer[]{5, 3, 7, 3, 6, 8}, new Integer[]{3, 5, 6, 7, 8, 9}, new Integer[]{3, 5, 6, 7, 8, null}),
+                Arguments.of(new Integer[]{10, 5, 15, 2, 7, 12, 18}, new Integer[]{2, 5, 7, 10, 12, 15, 18, 20}, new Integer[]{2, 5, 7, 10, 12, 15, 18, null}),
+                Arguments.of(new String[]{"dog", "cat", "elephant", "ant", "zebra"}, new String[]{"ant", "cat", "lion", "zebra"}, new String[]{"ant", "cat", null, "zebra"}),
+                Arguments.of(new String[]{}, new String[]{"apple", "banana"}, new String[]{null, null}),
+                Arguments.of(new String[]{"apple"}, new String[]{"apple", "banana"}, new String[]{"apple", null}),
+                Arguments.of(new String[]{"banana", "apple", "cherry"}, new String[]{"apple", "banana", "grape"}, new String[]{"apple", "banana", null}),
+                Arguments.of(new String[]{"z", "y", "x", "w", "v"}, new String[]{"v", "w", "x", "y", "z", "a"}, new String[]{"v", "w", "x", "y", "z", null}),
+                Arguments.of(new String[]{"giraffe", "elephant", "hippo", "elephant", "antelope"}, new String[]{"antelope", "elephant", "lion"}, new String[]{"antelope", "elephant", null}),
+                Arguments.of(new String[]{"sun", "moon", "star", "planet", "comet"}, new String[]{"comet", "moon", "planet", "star", "sun", "asteroid"}, new String[]{"comet", "moon", "planet", "star", "sun", null})
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("searchCases")
+    <T extends Comparable<T>> void testSearch (T[] inputArray, T[] searchInputs, T[] expectedResults) {
+        BinarySearchTree<T> bst = new BinarySearchTree<>(inputArray);
+
+        for (int i = 0; i < searchInputs.length; i++) {
+            BinarySearchTreeNode<T> output = bst.search(searchInputs[i]);
+
+            assertEquals(expectedResults[i], output != null ? output.getValue() : null);
+        }
+    }
+
+    static Stream<Arguments> removeCases() {
+        return Stream.of(
+                Arguments.of(
+                        new Integer[]{1, 2, 3},
+                        new Integer[]{2, 3, 4},
+                        new Integer[]{2, 3, null},
+                        new Integer[][]{{1, 3}, {1}, {1}}
+                ),
+                Arguments.of(
+                        new Integer[]{10, 5, 15, 2, 7, 12, 18},
+                        new Integer[]{15, 5, 10},
+                        new Integer[]{15, 5, 10},
+                        new Integer[][]{
+                                {2, 5, 7, 10, 12, 18}, // after removing 15
+                                {2, 7, 10, 12, 18},    // after removing 5
+                                {2, 7, 12, 18}         // after removing 10
+                        }
+                ),
+                Arguments.of(
+                        new Integer[]{5},
+                        new Integer[]{5},
+                        new Integer[]{5},
+                        new Integer[][]{{}}
+                ),
+                Arguments.of(
+                        new Integer[]{5, 3, 7, 6, 8},
+                        new Integer[]{3, 7, 8},
+                        new Integer[]{3, 7, 8},
+                        new Integer[][]{
+                                {5, 6, 7, 8}, // after removing 3
+                                {5, 6, 8},    // after removing 7
+                                {5, 6}        // after removing 8
+                        }
+                ),
+                Arguments.of(
+                        new Integer[]{},
+                        new Integer[]{3, 7, 8},
+                        new Integer[]{null, null, null},
+                        new Integer[][]{
+                                {}, // after removing 3
+                                {}, // after removing 7
+                                {}  // after removing 8
+                        }
+                ),
+                Arguments.of(
+                        new String[]{"dog", "cat", "elephant", "ant", "zebra"},
+                        new String[]{"cat", "dog", "lion"},
+                        new String[]{"cat", "dog", null},
+                        new String[][]{
+                                {"ant", "dog", "elephant", "zebra"}, // after removing "cat"
+                                {"ant", "elephant", "zebra"},       // after removing "dog"
+                                {"ant", "elephant", "zebra"}        // after attempting to remove "lion" (not found)
+                        }
+                ),
+                Arguments.of(
+                        new String[]{"sun", "moon", "star", "planet", "comet"},
+                        new String[]{"moon", "sun", "planet"},
+                        new String[]{"moon", "sun", "planet"},
+                        new String[][]{
+                                {"comet", "planet", "star", "sun"},
+                                {"comet", "planet", "star"},
+                                {"comet", "star"}
+                        }
+                )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("removeCases")
+    <T extends Comparable<T>> void testRemove (T[]inputArray, T[] removeInputs, T[] expectedResults, T[][] expectedInorderOutput) {
+        BinarySearchTree<T> bst = new BinarySearchTree<>(inputArray);
+
+        for (int i = 0; i < removeInputs.length; i++) {
+            BinarySearchTreeNode<T> res = bst.remove(removeInputs[i]);
+
+            assertEquals(expectedResults[i], res != null ? res.getValue() : null);
+
+            @SuppressWarnings("unchecked")
+            T[] inorderOutput = (T[]) bst.inOrderTraversal().toArray((T[]) new Comparable[0]);
+
+            assertArrayEquals(expectedInorderOutput[i], inorderOutput);
+        }
     }
 
     static Stream<Arguments> inOrderTraversalCases() {
