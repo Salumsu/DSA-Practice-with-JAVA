@@ -1,8 +1,8 @@
-package LinkedList;
+package LinkedList.SinglyLinkedList;
 
 import java.util.ArrayList;
 
-public class SinglyLinkedListWithTail<T> extends SinglyLinkedList<T> {
+public class SinglyLinkedListWithTail<T extends Comparable<T>> extends SinglyLinkedList<T> {
     private SinglyLinkedListNode<T> tail = null;
 
     public SinglyLinkedListWithTail () {

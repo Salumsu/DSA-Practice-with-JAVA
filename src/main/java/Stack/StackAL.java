@@ -5,7 +5,7 @@ import Queue.QueueAL;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class StackAL<T> {
+public class StackAL<T> implements StackInterface<T> {
     private ArrayList<T> arrayList;
 
     public StackAL () {
@@ -44,6 +44,10 @@ public class StackAL<T> {
         }
 
         return this.arrayList.removeFirst();
+    }
+
+    public T peek() {
+        return this.top();
     }
 
     public T top() {

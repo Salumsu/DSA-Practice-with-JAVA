@@ -82,7 +82,7 @@ class SortingTest {
             case Sorting.SortType.HEAP -> Sorting.heapSort(input, false);
         };
 
-        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(caseData[0]));
+        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(input));
         assertArrayEquals(sortedInput, input, "The original array should be mutated");
     }
 
@@ -102,7 +102,7 @@ class SortingTest {
             case Sorting.SortType.HEAP -> Sorting.heapSort(input, true);
         };
 
-        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(caseData[0]));
+        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(input));
         assertArrayEquals(sortedInput, input, "The original array should be mutated");
     }
 
@@ -122,7 +122,7 @@ class SortingTest {
             case Sorting.SortType.HEAP -> Sorting.heapSort(input, false, true);
         };
 
-        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(caseData[0]));
+        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(input));
         assertNotEquals(sortedInput, input, "The original array should be not be mutated");
     }
 
@@ -142,7 +142,7 @@ class SortingTest {
             case Sorting.SortType.HEAP -> Sorting.heapSort(input, true, true);
         };
 
-        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(caseData[0]));
+        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(input));
         assertNotEquals(sortedInput, input, "The original array should be not be mutated");
     }
 
@@ -154,7 +154,7 @@ class SortingTest {
 
         Integer[] sortedInput = Sorting.sort(input, type, false);
 
-        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(caseData[0]));
+        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(input));
         assertArrayEquals(sortedInput, input, "The original array should be mutated");
     }
 
@@ -166,7 +166,7 @@ class SortingTest {
 
         Integer[] sortedInput = Sorting.sort(input, type, true);
 
-        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(caseData[0]));
+        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(input));
         assertArrayEquals(sortedInput, input, "The original array should be mutated");
     }
 
@@ -178,7 +178,7 @@ class SortingTest {
 
         Integer[] sortedInput = Sorting.sort(input, type, false, true);
 
-        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(caseData[0]));
+        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(input));
         assertNotEquals(sortedInput, input, "The original array should be not be mutated");
     }
 
@@ -190,7 +190,7 @@ class SortingTest {
 
         Integer[] sortedInput = Sorting.sort(input, type, true, true);
 
-        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(caseData[0]));
+        assertArrayEquals(expected, sortedInput, "Sorting failed for input: " + Arrays.toString(input));
         assertNotEquals(sortedInput, input, "The original array should be not be mutated");
     }
 }

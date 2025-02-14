@@ -1,6 +1,8 @@
 package Algorithms;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public final class Utils {
 
@@ -79,6 +81,16 @@ public final class Utils {
         arr[right] = temp;
     }
 
+    public static <T extends Comparable<T>> void swap (List<T> arr, Integer left, Integer right) {
+        if (left >= arr.size() || right >= arr.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        T temp = arr.get(left);
+        arr.set(left, arr.get(right));
+        arr.set(right, temp);
+    }
+
     /**
      * Returns the smaller of two comparable elements.
      *
@@ -146,4 +158,11 @@ public final class Utils {
         return first.compareTo(second) == 0;
     }
 
+    public static <T extends Comparable<T>> T get(T[] arr, int index) {
+        return arr[index];
+    }
+
+    public static <T extends Comparable<T>> T get(List<T> arr, int index) {
+        return arr.get(index);
+    }
 }

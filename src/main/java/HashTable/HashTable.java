@@ -3,22 +3,7 @@ package HashTable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-class HashNode<K, V> {
-    public K key;
-    public V value;
-    public final int hashCode;
-
-    public HashNode<K, V> next;
-
-    public HashNode (K key, V value, int hashCode) {
-        this.hashCode = hashCode;
-        this.key = key;
-        this.value = value;
-        this.next = null;
-    }
-}
-
-public class HashTable<K, V> {
+public class HashTable<K, V extends Comparable<V>> implements HashTableInterface<K, V> {
     private int tableSize;
     private int currSize;
     private final double threshHold = 0.7; //
@@ -82,7 +67,7 @@ public class HashTable<K, V> {
 
         for (HashNode<K, V> curr : temp) {
             while (curr != null) {
-                this.add(curr.key, curr.value);
+                this.add(curr.getKey(), curr.getValue());
                 curr = curr.next;
             }
         }
@@ -94,7 +79,7 @@ public class HashTable<K, V> {
 
         HashNode<K, V> head = this.list.get(index);
 
-        while (head != null && !(head.key.equals(key) && hashCode == head.hashCode)) {
+        while (head != null && !(head.getKey().equals(key) && hashCode == head.getHashCode())) {
             head = head.next;
         }
 
@@ -102,7 +87,15 @@ public class HashTable<K, V> {
             return null;
         }
 
-        return head.value;
+        return head.getValue();
+    }
+
+    public boolean containsKey (K key) {
+        return this.get(key) != null;
+    }
+
+    public void put (K key, V value) {
+        this.add(key, value);
     }
 
     public void add (K key, V value) {
@@ -121,8 +114,8 @@ public class HashTable<K, V> {
         HashNode<K, V> prev = null;
 
         while (head != null) {
-            if (head.key.equals(key) && head.hashCode == hashCode) {
-                head.value = value;
+            if (head.getKey().equals(key) && head.getHashCode() == hashCode) {
+                head.setValue(value);
                 return;
             }
             prev = head;
@@ -145,7 +138,7 @@ public class HashTable<K, V> {
         HashNode<K, V> head = this.list.get(index);
         HashNode<K, V> prev = null;
 
-        while (head != null && !(head.key.equals(key) && head.hashCode == hashCode)) {
+        while (head != null && !(head.getKey().equals(key) && head.getHashCode() == hashCode)) {
             prev = head;
             head = head.next;
         }
@@ -155,7 +148,7 @@ public class HashTable<K, V> {
         }
 
         this.currSize--;
-        V value = head.value;
+        V value = head.getValue();
         if (prev == null) {
             this.list.set(index, head.next);
         } else {

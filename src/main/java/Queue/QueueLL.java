@@ -1,11 +1,11 @@
 package Queue;
 
-import LinkedList.SinglyLinkedListWithTail;
+import LinkedList.SinglyLinkedList.SinglyLinkedListWithTail;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class QueueLL <T> {
+public class QueueLL <T extends Comparable<T>> implements QueueInterface<T> {
     private SinglyLinkedListWithTail<T> list;
 
     public QueueLL () {

@@ -3,7 +3,6 @@ package Trees.BinarySearchTree;
 import Queue.QueueAL;
 
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 
 public class BinarySearchTree<T extends Comparable<T>> {
     protected BinarySearchTreeNode<T> head;

@@ -1,41 +1,11 @@
-package LinkedList;
+package LinkedList.SinglyLinkedList;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-class SinglyLinkedListNode <T> {
-    private T value;
-    private SinglyLinkedListNode<T> next;
-
-    public SinglyLinkedListNode (T value) {
-        this.value = value;
-        this.next = null;
-    }
-
-    public SinglyLinkedListNode (T value, SinglyLinkedListNode<T> next) {
-        this.value = value;
-        this.next = next;
-    }
-
-    public T getValue () {
-        return this.value;
-    }
-
-    public void setValue (T value) {
-        this.value = value;
-    }
-
-    public SinglyLinkedListNode<T> getNext() {
-        return this.next;
-    }
-
-    public void setNext(SinglyLinkedListNode<T> next) {
-        this.next = next;
-    }
-}
 
 
-public class SinglyLinkedList<T> {
+public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedListInterface<T> {
 
     protected SinglyLinkedListNode<T> head;
     protected int length;
@@ -113,6 +83,10 @@ public class SinglyLinkedList<T> {
         return curr.getValue();
     }
 
+    public T removeLast() {
+        return this.pop();
+    }
+
     public T pop () {
         this.throwErrorWhenListIsEmpty();
 
@@ -167,6 +141,10 @@ public class SinglyLinkedList<T> {
         return list;
     }
 
+    public T removeFirst () {
+        return this.popHead();
+    }
+
     public T popHead () {
         this.throwErrorWhenListIsEmpty();
 
@@ -196,6 +174,10 @@ public class SinglyLinkedList<T> {
         return list;
     }
 
+    public void addLast(T value) {
+        this.append(value);
+    }
+
     public void append (T value) {
         SinglyLinkedListNode<T> node = new SinglyLinkedListNode<>(value);
         if (this.head == null) {
@@ -209,6 +191,10 @@ public class SinglyLinkedList<T> {
             curr.setNext(node);
         }
         this.length++;
+    }
+
+    public void addFirst(T value) {
+        this.prepend(value);
     }
 
     public void prepend (T value) {
@@ -272,6 +258,20 @@ public class SinglyLinkedList<T> {
         }
 
         return null;
+    }
+
+    public boolean contains (T value) {
+        if (!this.isEmpty()) {
+            SinglyLinkedListNode<T> curr = this.head;
+
+            while (curr != null) {
+                if (curr.getValue().compareTo(value) == 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     protected void throwErrorWhenIndexOutOfBounds (Integer index) {

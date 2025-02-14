@@ -1,11 +1,11 @@
 package Stack;
 
-import LinkedList.SinglyLinkedList;
+import LinkedList.SinglyLinkedList.SinglyLinkedList;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class StackLL<T> {
+public class StackLL<T extends Comparable<T>> implements StackInterface<T> {
     SinglyLinkedList<T> list;
 
     public StackLL () {
@@ -44,6 +44,10 @@ public class StackLL<T> {
         }
 
         return this.list.popHead();
+    }
+
+    public T peek() {
+        return this.top();
     }
 
     public T top() {

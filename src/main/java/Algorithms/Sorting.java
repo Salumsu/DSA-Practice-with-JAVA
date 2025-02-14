@@ -1,6 +1,7 @@
 package Algorithms;
 
 import Heap.BinaryHeap;
+import Heap.HeapHelper;
 
 import java.util.Arrays;
 
@@ -515,14 +516,12 @@ public class Sorting {
         T[] newArr = clone ? arr.clone() : arr;
         if (newArr.length == 0 || newArr.length == 1) return newArr;
 
-        BinaryHeap binaryHeap = new BinaryHeap(desc);
-
-        binaryHeap.heapify(newArr);
+        HeapHelper.heapify(desc, newArr);
         int sortedCount = 1;
 
         while (sortedCount < newArr.length) {
             Utils.swap(newArr, 0, newArr.length - sortedCount);
-            binaryHeap.siftDown(newArr, 0, newArr.length - sortedCount);
+            HeapHelper.siftDown(desc, newArr, 0, newArr.length - sortedCount);
             sortedCount++;
         }
 

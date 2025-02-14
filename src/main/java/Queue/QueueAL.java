@@ -3,7 +3,7 @@ package Queue;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class QueueAL <T> {
+public class QueueAL <T> implements QueueInterface<T> {
     private ArrayList<T> arrayList;
 
     public QueueAL () {
