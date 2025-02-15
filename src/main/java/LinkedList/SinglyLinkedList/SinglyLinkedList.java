@@ -1,18 +1,24 @@
 package LinkedList.SinglyLinkedList;
 
+import LinkedList.LinkedListInterface;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
 
-public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedListInterface<T> {
+public class SinglyLinkedList<T extends Comparable<T>> implements LinkedListInterface<T> {
 
     protected SinglyLinkedListNode<T> head;
+    private SinglyLinkedListNode<T> tail;
     protected int length;
 
+    @Override
     public int size() {
         return this.length;
     }
+
+    @Override
     public boolean isEmpty() {return this.head == null;}
 
     public SinglyLinkedList () {
@@ -56,12 +62,19 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
             curr = curr.getNext();
             this.length++;
         }
+        this.tail = curr;
     }
 
     public T getHead() {
         this.throwErrorWhenListIsEmpty();
 
         return this.head.getValue();
+    }
+
+    public T getTail () {
+        this.throwErrorWhenListIsEmpty();
+
+        return this.tail.getValue();
     }
 
     public T get (Integer index) {
@@ -83,6 +96,7 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
         return curr.getValue();
     }
 
+    @Override
     public T removeLast() {
         return this.pop();
     }
@@ -101,6 +115,7 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
         if (prev == null) {
             this.head = null;
         } else {
+            this.tail = prev;
             prev.setNext(null);
         }
 
@@ -127,7 +142,9 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
 
         if (prev == null) {
             this.head = null;
+            this.tail = null;
         } else {
+            this.tail = prev;
             prev.setNext(null);
         }
 
@@ -141,6 +158,7 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
         return list;
     }
 
+    @Override
     public T removeFirst () {
         return this.popHead();
     }
@@ -174,6 +192,7 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
         return list;
     }
 
+    @Override
     public void addLast(T value) {
         this.append(value);
     }
@@ -187,18 +206,23 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
             while (curr.getNext() != null) {
                 curr = curr.getNext();
             }
-
             curr.setNext(node);
         }
         this.length++;
+        this.tail = node;
     }
 
+    @Override
     public void addFirst(T value) {
         this.prepend(value);
     }
 
     public void prepend (T value) {
         SinglyLinkedListNode<T> node = new SinglyLinkedListNode<>(value);
+
+        if (this.head == null) {
+            this.tail = node;
+        }
 
         node.setNext(this.head);
         this.head = node;
@@ -224,6 +248,10 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
             this.head = node;
             this.head.setNext(temp);
             return;
+        }
+
+        if (index == this.length) {
+            this.tail = node;
         }
 
         this.length++;
@@ -252,14 +280,20 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
         }
 
         this.length--;
+        if (index == this.length) {
+            this.tail = prev;
+        }
+
 
         if (curr != null) {
+
             return curr.getValue();
         }
 
         return null;
     }
 
+    @Override
     public boolean contains (T value) {
         if (!this.isEmpty()) {
             SinglyLinkedListNode<T> curr = this.head;
@@ -272,6 +306,17 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
         }
 
         return false;
+    }
+
+    public void merge (SinglyLinkedList<T> other) {
+        if (this.head == null) {
+            this.head = other.head;
+        } else {
+            this.tail.setNext(other.head);
+        }
+        this.tail = other.tail;
+
+        this.length += other.size();
     }
 
     protected void throwErrorWhenIndexOutOfBounds (Integer index) {
@@ -307,11 +352,11 @@ public class SinglyLinkedList<T extends Comparable<T>> implements SinglyLinkedLi
 
     public T[] toArray (Class<T> clazz) {
         @SuppressWarnings("unchecked")
-        T[] list = (T[]) Array.newInstance(clazz, this.length);
+        T[] list = (T[]) Array.newInstance(clazz, this.size());
 
         SinglyLinkedListNode<T> curr = this.head;
 
-        for (int i = 0; i < this.length; i++) {
+        for (int i = 0; i < this.size(); i++) {
             list[i] = curr.getValue();
             curr = curr.getNext();
         }

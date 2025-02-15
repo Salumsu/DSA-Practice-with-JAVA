@@ -41,11 +41,11 @@ class UtilsTest {
 
         Utils.SplitArray splitArray = Utils.splitArray(input, mid);
 
-        assertArrayEquals(expectedLeft, splitArray.left(),
-                "Left array:" + Arrays.toString(splitArray.left()) + " \n didn't match the expected value: " + Arrays.toString(expectedLeft)
+        assertArrayEquals(expectedLeft, splitArray.left().toArray(),
+                "Left array:" + splitArray.left().toString() + " \n didn't match the expected value: " + Arrays.toString(expectedLeft)
         );
-        assertArrayEquals(expectedRight, splitArray.right(),
-                "Right array:" + Arrays.toString(splitArray.right()) + " \n didn't match the expected value: " + Arrays.toString(expectedRight)
+        assertArrayEquals(expectedRight, splitArray.right().toArray(),
+                "Right array:" + splitArray.right().toString() + " \n didn't match the expected value: " + Arrays.toString(expectedRight)
         );
     }
 
@@ -59,11 +59,11 @@ class UtilsTest {
 
         Utils.SplitArray splitArray = Utils.splitArray(input, mid, false);
 
-        assertArrayEquals(expectedLeft, splitArray.left(),
-                "Left array:" + Arrays.toString(splitArray.left()) + " \n didn't match the expected value: " + Arrays.toString(expectedLeft)
+        assertArrayEquals(expectedLeft, splitArray.left().toArray(),
+                "Left array:" + splitArray.left().toString() + " \n didn't match the expected value: " + Arrays.toString(expectedLeft)
         );
-        assertArrayEquals(expectedRight, splitArray.right(),
-                "Right array:" + Arrays.toString(splitArray.right()) + " \n didn't match the expected value: " + Arrays.toString(expectedRight)
+        assertArrayEquals(expectedRight, splitArray.right().toArray(),
+                "Right array:" + splitArray.right().toString() + " \n didn't match the expected value: " + Arrays.toString(expectedRight)
         );
     }
 

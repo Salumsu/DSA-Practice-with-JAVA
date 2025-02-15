@@ -95,5 +95,27 @@ class SinglyLinkedListTest {
         assertArrayEquals(output, expectedOutout);
     }
 
+    static Stream<Integer[][]> mergeCases() {
+        return Stream.of(
+                new Integer[][]{{}, {}, {}}, // Both Empty
+                new Integer[][]{{}, {2, 3}, {2, 3}}, // First one empty
+                new Integer[][]{{1, 2}, {}, {1, 2}}, // Second one empty
+                new Integer[][]{{3, 4}, {1, 2}, {3, 4, 1, 2}} // Both not empty
+        );
+    }
 
+    @ParameterizedTest
+    @MethodSource("mergeCases")
+    void testMerge(Integer[][] cases) {
+        Integer[] firstInput = cases[0];
+        Integer[] secondInput = cases[1];
+        Integer[] expectedOutput = cases[2];
+
+        SinglyLinkedList<Integer> first = new SinglyLinkedList<>(firstInput);
+        SinglyLinkedList<Integer> second = new SinglyLinkedList<>(secondInput);
+        first.merge(second);
+        Integer[] output = first.toArray(Integer.class);
+
+        assertArrayEquals(expectedOutput, output);
+    }
 }

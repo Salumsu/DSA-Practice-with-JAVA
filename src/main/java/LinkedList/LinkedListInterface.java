@@ -1,6 +1,6 @@
-package LinkedList.SinglyLinkedList;
+package LinkedList;
 
-public interface SinglyLinkedListInterface<T extends Comparable<T>> {
+public interface LinkedListInterface<T extends Comparable<T>> {
     void addFirst(T value);
     void addLast(T value);
     T removeFirst();

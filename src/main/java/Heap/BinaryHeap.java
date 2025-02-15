@@ -4,6 +4,7 @@ import Algorithms.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BinaryHeap<T extends Comparable<T>> {
     private boolean isMin; // true = min heap, else = max heap
@@ -24,8 +25,8 @@ public class BinaryHeap<T extends Comparable<T>> {
 
     public BinaryHeap(boolean isMin, T[] arr) {
         this(isMin);
-        T[] heapified = HeapHelper.heapify(isMin, arr, true);
-        this.list.addAll(Arrays.asList(heapified));
+        List<T> heapified = HeapHelper.heapify(isMin, Arrays.asList(arr), true);
+        this.list.addAll(heapified);
     }
 
     public void insert(T item) {
