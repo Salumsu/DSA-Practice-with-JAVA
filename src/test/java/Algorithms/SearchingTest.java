@@ -3,7 +3,10 @@ package Algorithms;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import utils.CompareObjectTests;
+import utils.ObjectTest;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,6 +31,20 @@ class SearchingTest {
 
         assertEquals(expectedResult, output);
     }
+
+    @ParameterizedTest
+    @MethodSource("linearSearchCases")
+    <T extends Comparable<T>> void testLinearSearchWithObj (T[] arr, T item, int expectedResult) {
+        List<ObjectTest<T>> input = ObjectTest.createObjectTests(arr);
+        // UNFORTUNATELY, WE NEED TO PASS AN OBJECT WITH SIMILAR VALUE.
+        // YOU COULD ALSO PASS THE OBJECT ITSELF IF YOU HAVE THE REFERENCE E.G. input[0]
+        // BUT WE MUST ALSO HANDLE CASES WHERE THE VALUE ISN'T IN INPUT
+        // SO, WE INSTANTIATE A NEW OBJECT HERE
+        int output = Searching.linearSearch(input, new ObjectTest<>(item), new CompareObjectTests<>());
+
+        assertEquals(expectedResult, output);
+    }
+
 
     static Stream<Arguments> sortedSearchCases() {
         return Stream.of(
@@ -66,4 +83,25 @@ class SearchingTest {
 
         assertEquals(expectedResult, output);
     }
+
+    @ParameterizedTest
+    @MethodSource("sortedSearchCases")
+    <T extends Comparable<T>> void testBinarySearchWithObj (T[] arr, T item, int expectedResult) {
+        List<ObjectTest<T>> input = ObjectTest.createObjectTests(arr);
+
+        int output = Searching.binarySearch(input, new ObjectTest<>(item), new CompareObjectTests<>());
+
+        assertEquals(expectedResult, output);
+    }
+
+    @ParameterizedTest
+    @MethodSource("sortedSearchCases")
+    <T extends Comparable<T>> void testExponentialSearchWithObj (T[] arr, T item, int expectedResult) {
+        List<ObjectTest<T>> input = ObjectTest.createObjectTests(arr);
+
+        int output = Searching.exponentialSearch(input, new ObjectTest<>(item), new CompareObjectTests<>());
+
+        assertEquals(expectedResult, output);
+    }
+
 }

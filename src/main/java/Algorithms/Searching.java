@@ -72,6 +72,8 @@ public class Searching {
      * @param comparator A comparator instance.
      * @return      The index of the item if found, otherwise -1.
      */
+
+    // UNFORTUNATELY, WE NEED TO PASS AN OBJECT WITH SIMILAR VALUE
     public static <T extends Object> int linearSearch (List<T> arr, T item, Comparator<T> comparator) {
         for (int i = 0; i < arr.size(); i++) {
             if (comparator.compare(arr.get(i), item) == 0) {
