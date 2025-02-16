@@ -1,6 +1,6 @@
 package Trees.BinarySearchTree;
 
-public class BinarySearchTreeNode <T extends Comparable<T>> {
+public class BinarySearchTreeNode <T> {
     protected T value;
     protected BinarySearchTreeNode<T> left;
     protected BinarySearchTreeNode<T> right;

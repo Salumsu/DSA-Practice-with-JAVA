@@ -29,6 +29,19 @@ public class HeapHelper {
         return isMin ? item.compareTo(parent) < 0 : item.compareTo(parent) > 0;
     }
 
+    /**
+     * Determines whether the given item should sift up in the heap.
+     *
+     * @param <T>    The type of elements in the heap.
+     * @param isMin  Indicates whether the heap is a min-heap (true) or max-heap (false).
+     * @param item   The item being inserted or repositioned.
+     * @param parent The parent of the item in the heap.
+     * @return       true if the item should swap with its parent, false otherwise.
+     */
+    private static <T extends Object> boolean shouldSiftUp (boolean isMin, Comparator<T> comparator, T item, T parent) {
+        return isMin ? comparator.compare(item, parent) < 0 : comparator.compare(item, parent) > 0;
+    }
+
     public static <T extends Comparable<T>> T[] siftUp (boolean isMin, T[] arr, int index) {
         return siftUp(isMin, arr, index, false);
     }
@@ -57,7 +70,44 @@ public class HeapHelper {
         List<T> newArr = clone ? new ArrayList<>(arr) : arr;
         int parentIndex = HeapHelper.getParentIndex(index);
 
-        while (parentIndex >= 0 && HeapHelper.shouldSiftUp(isMin, Utils.get(newArr, index), Utils.get(newArr, parentIndex))) {
+        while (parentIndex >= 0 && HeapHelper.shouldSiftUp(isMin, newArr.get(index), newArr.get(parentIndex))) {
+            Utils.swap(newArr, index, parentIndex);
+            index = parentIndex;
+            parentIndex = HeapHelper.getParentIndex(parentIndex);
+        }
+
+        return newArr;
+    }
+
+    public static <T extends Object> T[] siftUp (boolean isMin, T[] arr, Comparator<T> comparator, int index) {
+        return siftUp(isMin, arr, comparator, index, false);
+    }
+
+    public static <T extends Object> List<T> siftUp (boolean isMin, List<T> arr, Comparator<T> comparator, int index) {
+        return siftUp(isMin, arr, comparator, index, false);
+    }
+
+    /**
+     * Performs the sift-up operation to maintain the heap property.
+     *
+     * @param <T>    The type of elements in the heap, which must be comparable.
+     * @param isMin  Indicates whether the heap is a min-heap (true) or max-heap (false).
+     * @param arr    The array representing the heap.
+     * @param index  The index of the element to sift up.
+     * @param clone  If true, the operation is performed on a cloned version of the array.
+     * @return       The modified array after the sift-up operation.
+     */
+    public static <T extends Object> T[] siftUp (boolean isMin, T[] arr, Comparator<T> comparator, int index, boolean clone) {
+        T[] newArr = clone ? arr.clone() : arr;
+        siftUp(isMin, Arrays.asList(arr), comparator, index, false);
+        return newArr;
+    }
+
+    public static <T extends Object> List<T> siftUp (boolean isMin, List<T> arr, Comparator<T> comparator, int index, boolean clone) {
+        List<T> newArr = clone ? new ArrayList<>(arr) : arr;
+        int parentIndex = HeapHelper.getParentIndex(index);
+
+        while (parentIndex >= 0 && HeapHelper.shouldSiftUp(isMin, comparator, newArr.get(index), newArr.get(parentIndex))) {
             Utils.swap(newArr, index, parentIndex);
             index = parentIndex;
             parentIndex = HeapHelper.getParentIndex(parentIndex);

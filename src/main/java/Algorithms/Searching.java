@@ -37,13 +37,7 @@ public class Searching {
      * It works on both sorted and unsorted arrays but is inefficient for large datasets.
      */
     public static <T extends Comparable<T>> int linearSearch (List<T> arr, T item) {
-        for (int i = 0; i < arr.size(); i++) {
-            if (Utils.equals(arr.get(i), item)) {
-                return i;
-            }
-        }
-
-        return -1;
+        return linearSearch(arr, item, Comparable::compareTo);
     }
 
     /**
@@ -121,18 +115,7 @@ public class Searching {
     }
 
     private static <T extends Comparable<T>> int binarySearch (List<T> arr, T item, int low, int high) {
-        if (high == low) return -1;
-        int mid = (low + high) / 2;
-
-        if (Utils.equals(arr.get(mid), item)) {
-            return mid;
-        }
-
-        if (arr.get(mid).compareTo(item) > 0) {
-            return binarySearch(arr, item, low, mid);
-        } else {
-            return binarySearch(arr, item, mid + 1, high);
-        }
+        return binarySearch(arr, item, low, high, Comparable::compareTo);
     }
 
     /**
@@ -222,19 +205,7 @@ public class Searching {
      * If the array is not sorted, the behavior is undefined.
      */
     public static <T extends Comparable<T>> int exponentialSearch (List<T> arr, T item) {
-        if (arr.isEmpty()) return -1;
-        if (Utils.equals(arr.getFirst(), item)) return 0;
-
-        for (int i = 1; i < arr.size(); i *= 2) {
-            if (Utils.equals(arr.get(i), item)) {
-                return i;
-            // Check if the item at the currentIndex is already greater than the item
-            } else if (arr.get(i).compareTo(item) > 0) {
-                return binarySearch(arr, item, i / 2, i);
-            }
-        }
-
-        return -1;
+        return exponentialSearch(arr, item, Comparable::compareTo);
     }
 
     /**

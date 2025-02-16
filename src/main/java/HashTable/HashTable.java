@@ -3,7 +3,7 @@ package HashTable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HashTable<K, V extends Comparable<V>> implements HashTableInterface<K, V> {
+public class HashTable<K, V> implements HashTableInterface<K, V> {
     private int tableSize;
     private int currSize;
     private final double threshHold = 0.7; //

@@ -2,7 +2,7 @@ package HashTable;
 
 import LinkedList.SinglyLinkedList.SinglyLinkedListNode;
 
-public class HashNode<K, V extends Comparable<V>> extends SinglyLinkedListNode<V> {
+public class HashNode<K, V> extends SinglyLinkedListNode<V> {
     private K key;
     private final int hashCode;
 

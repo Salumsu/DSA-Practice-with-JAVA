@@ -111,17 +111,7 @@ public class Sorting {
      * @return      The sorted array (sorted in place).
      */
     public static <T extends Comparable<T>> List<T> sort (List<T> arr, SortType type, boolean desc, boolean clone) {
-        List<T> newArr = clone ? new ArrayList<>(arr) : arr;
-
-        return switch (type) {
-            case Sorting.SortType.BUBBLE -> Sorting.bubbleSort(newArr, desc, clone);
-            case Sorting.SortType.MERGE -> Sorting.mergeSort(newArr, desc, clone);
-            case Sorting.SortType.INSERTION -> Sorting.insertionSort(newArr, desc, clone);
-            case Sorting.SortType.QUICKSORT -> Sorting.quickSort(newArr, desc, clone);
-            case Sorting.SortType.QUICKSORT2 -> Sorting.quickSort2(newArr, desc, clone);
-            case Sorting.SortType.SELECTION -> Sorting.selectionSort(newArr, desc, clone);
-            case Sorting.SortType.HEAP -> Sorting.heapSort(newArr, desc, clone);
-        };
+        return sort(arr, type, Comparable::compareTo, desc, clone);
     }
 
     /**
@@ -306,29 +296,14 @@ public class Sorting {
      * @return      The sorted array (in-place or copied based on {@code clone}).
      */
     public static <T extends Comparable<T>> List<T> bubbleSort (List<T> arr, boolean desc, boolean clone) {
-        List<T> newArr = clone ? new ArrayList<>(arr) : arr;
-        if (newArr.isEmpty() || newArr.size() == 1) return newArr;
-
-        boolean isSorted = false;
-
-        while (!isSorted) {
-            isSorted = true;
-            for (int i = 0; i < newArr.size() - 1; i++) {
-                if (Utils.shouldSwap(newArr.get(i), newArr.get(i + 1), desc)) {
-                    Utils.swap(newArr, i, i + 1);
-                    isSorted = false;
-                }
-            }
-        }
-
-        return newArr;
+        return bubbleSort(arr, Comparable::compareTo, desc, clone);
     }
 
     /**
      * BUBBLE SORT <br /><br />
      * Sorts the given array in ascending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @return      The sorted array (sorted in place).
      *
@@ -342,7 +317,7 @@ public class Sorting {
      * BUBBLE SORT <br /><br />
      * Sorts the given array in ascending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @return      The sorted array (sorted in place).
      *
@@ -356,7 +331,7 @@ public class Sorting {
      * BUBBLE SORT <br /><br />
      * Sorts the given array in ascending or descending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @return      The sorted array (sorted in place).
@@ -371,7 +346,7 @@ public class Sorting {
      * BUBBLE SORT <br /><br />
      * Sorts the given array in ascending or descending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @return      The sorted array (sorted in place).
@@ -386,7 +361,7 @@ public class Sorting {
      * BUBBLE SORT <br /><br />
      * Sorts the given array in ascending or descending order, with an option to clone the array.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
@@ -403,7 +378,7 @@ public class Sorting {
      * BUBBLE SORT <br /><br />
      * Sorts the given array in ascending or descending order, with an option to clone the array.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
@@ -522,41 +497,14 @@ public class Sorting {
     }
 
     private static <T extends Comparable<T>> List<T> doMergeSort (List<T> arr, boolean desc) {
-        if (arr.isEmpty() || arr.size() == 1) return arr;
-
-        int mid = arr.size() / 2 - 1;
-        Utils.SplitArray<T> splitArray = Utils.splitArray(arr, mid);
-        List<T> left = doMergeSort(splitArray.left(), desc);
-        List<T> right = doMergeSort(splitArray.right(), desc);
-
-        int leftIndex = 0;
-        int rightIndex = 0;
-
-        while (leftIndex < left.size() && rightIndex < right.size()) {
-            if (Utils.shouldSwap(left.get(leftIndex), right.get(rightIndex), desc)) {
-                arr.set(leftIndex + rightIndex, right.get(rightIndex++));
-            } else {
-                arr.set(leftIndex + rightIndex, left.get(leftIndex++));
-            }
-        }
-
-        boolean isLeftRemaining = leftIndex < left.size();
-        List<T> withLeftOver = isLeftRemaining ? left : right;
-        int leftOverIndex = isLeftRemaining ? leftIndex : rightIndex;
-        int otherIndex = isLeftRemaining ? rightIndex : leftIndex;
-
-        while (leftOverIndex < withLeftOver.size()) {
-            arr.set(leftOverIndex + otherIndex, withLeftOver.get(leftOverIndex++));
-        }
-
-        return arr;
+        return doMergeSort(arr, Comparable::compareTo, desc);
     }
 
     /**
      * MERGE SORT <br /><br />
      * Sorts the given array in ascending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @return      The sorted array (sorted in place).
      *
@@ -570,7 +518,7 @@ public class Sorting {
      * MERGE SORT <br /><br />
      * Sorts the given array in ascending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @return      The sorted array (sorted in place).
      *
@@ -584,7 +532,7 @@ public class Sorting {
      * MERGE SORT <br /><br />
      * Sorts the given array in ascending or descending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @return      The sorted array (sorted in place).
@@ -599,7 +547,7 @@ public class Sorting {
      * MERGE SORT <br /><br />
      * Sorts the given array in ascending or descending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @return      The sorted array (sorted in place).
@@ -614,7 +562,7 @@ public class Sorting {
      * MERGE SORT <br /><br />
      * Sorts the given array in ascending or descending order, with an option to clone the array.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
@@ -633,7 +581,7 @@ public class Sorting {
      * MERGE SORT <br /><br />
      * Sorts the given array in ascending or descending order, with an option to clone the array.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
@@ -764,28 +712,14 @@ public class Sorting {
      * @return      The sorted array (in-place or copied based on {@code clone}).
      */
     public static <T extends Comparable<T>> List<T> insertionSort (List<T> arr, boolean desc, boolean clone) {
-        List<T> newArr = clone ? new ArrayList<>(arr) : arr;
-        if (newArr.isEmpty() || newArr.size() == 1) return newArr;
-
-        for (int i = 1; i < newArr.size(); i++) {
-            int currentIndex = i;
-            T currentItem = newArr.get(currentIndex);
-            while (currentIndex > 0 && Utils.shouldSwap(currentItem, newArr.get(currentIndex - 1), !desc)) {
-                newArr.set(currentIndex, newArr.get(currentIndex - 1));
-                currentIndex--;
-            }
-
-            newArr.set(currentIndex, currentItem);
-        }
-
-        return newArr;
+        return insertionSort(arr, Comparable::compareTo, desc, clone);
     }
 
     /**
      * INSERTION SORT <br /><br />
      * Sorts the given array in ascending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @return      The sorted array (sorted in place).
      *
@@ -799,7 +733,7 @@ public class Sorting {
      * INSERTION SORT <br /><br />
      * Sorts the given array in ascending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @return      The sorted array (sorted in place).
      *
@@ -813,7 +747,7 @@ public class Sorting {
      * INSERTION SORT <br /><br />
      * Sorts the given array in ascending or descending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @return      The sorted array (sorted in place).
@@ -828,7 +762,7 @@ public class Sorting {
      * INSERTION SORT <br /><br />
      * Sorts the given array in ascending or descending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @return      The sorted array (sorted in place).
@@ -843,7 +777,7 @@ public class Sorting {
      * INSERTION SORT <br /><br />
      * Sorts the given array in ascending or descending order, with an option to clone the array.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
@@ -862,7 +796,7 @@ public class Sorting {
      * INSERTION SORT <br /><br />
      * Sorts the given array in ascending or descending order, with an option to clone the array.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
@@ -978,42 +912,14 @@ public class Sorting {
     }
 
     private static <T extends Comparable<T>> List<T> doQuickSort(List<T> arr, Integer start, Integer pivotIndex, boolean desc) {
-        if (start >= pivotIndex) return arr;
-
-        int left = start;
-        int right = pivotIndex - 1;
-
-        while (left <= right) {
-            while (Utils.shouldSwap(arr.get(left), arr.get(pivotIndex), !desc, true) && left <= right) {
-                left++;
-            }
-
-            while (right >= 0 && Utils.shouldSwap(arr.get(right), arr.get(pivotIndex), desc, true) && left <= right) {
-                right--;
-            }
-
-            if (right < left) {
-                break;
-            }
-
-            Utils.swap(arr, left, right);
-        }
-
-        if (left != pivotIndex) {
-            Utils.swap(arr, left, pivotIndex);
-        }
-
-        doQuickSort(arr, start, left - 1, desc);
-        doQuickSort(arr, left + 1, pivotIndex, desc);
-
-        return arr;
+        return doQuickSort(arr, Comparable::compareTo, start, pivotIndex, desc);
     }
 
     /**
      * QUICK SORT <br /><br />
      * Sorts the given array in ascending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @return      The sorted array (sorted in place).
      *
@@ -1027,7 +933,7 @@ public class Sorting {
      * QUICK SORT <br /><br />
      * Sorts the given array in ascending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @return      The sorted array (sorted in place).
      *
@@ -1041,7 +947,7 @@ public class Sorting {
      * QUICK SORT <br /><br />
      * Sorts the given array in ascending or descending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @return      The sorted array (sorted in place).
@@ -1056,7 +962,7 @@ public class Sorting {
      * QUICK SORT <br /><br />
      * Sorts the given array in ascending or descending order.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @return      The sorted array (sorted in place).
@@ -1071,7 +977,7 @@ public class Sorting {
      * QUICK SORT <br /><br />
      * Sorts the given array in ascending or descending order, with an option to clone the array.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
@@ -1088,7 +994,7 @@ public class Sorting {
      * QUICK SORT <br /><br />
      * Sorts the given array in ascending or descending order, with an option to clone the array.
      *
-     * @param <T>   The type of elements in the array, must implement {@link Comparable}.
+     * @param <T>   The type of elements in the array.
      * @param arr   The array to be sorted.
      * @param desc  {@code true} for descending order, {@code false} for ascending.
      * @param clone {@code true} to sort a copy of the array, leaving the original unchanged;
@@ -1228,22 +1134,7 @@ public class Sorting {
     }
 
     private static <T extends Comparable<T>> List<T> doQuickSort2(List<T> arr, Integer start, Integer pivotIndex, boolean desc) {
-        if (start >= pivotIndex) return arr;
-
-        int j = start - 1;
-
-        for (int i = start; i < pivotIndex; i++) {
-            if (Utils.shouldSwap(arr.get(i), arr.get(pivotIndex), !desc, true)) {
-                Utils.swap(arr, i, ++j);
-            }
-        }
-
-        Utils.swap(arr, pivotIndex, ++j);
-
-        doQuickSort2(arr, 0, j - 1, desc);
-        doQuickSort2(arr, j + 1, pivotIndex, desc);
-
-        return arr;
+        return doQuickSort2(arr, Comparable::compareTo, start, pivotIndex, desc);
     }
 
     /**
@@ -1448,22 +1339,7 @@ public class Sorting {
      * @return      The sorted array (in-place or copied based on {@code clone}).
      */
     public static <T extends Comparable<T>> List<T> selectionSort (List<T> arr, boolean desc, boolean clone) {
-        List<T> newArr = clone ? new ArrayList(arr) : arr;
-        if (newArr.isEmpty() || newArr.size() == 1) return newArr;
-
-        for (int i = 0; i < newArr.size() - 1; i++) {
-            int candidateIndex = i;
-
-            for (int j = i + 1; j < newArr.size(); j++) {
-                if (Utils.shouldSwap(newArr.get(j), newArr.get(candidateIndex), !desc)) {
-                    candidateIndex = j;
-                }
-            }
-
-            Utils.swap(newArr, candidateIndex, i);
-        }
-
-        return newArr;
+        return selectionSort(arr, Comparable::compareTo, desc, clone);
     }
 
     /**
@@ -1659,19 +1535,7 @@ public class Sorting {
      * @return      The sorted array (in-place or copied based on {@code clone}).
      */
     public static <T extends Comparable<T>> List<T> heapSort (List<T> arr, boolean desc, boolean clone) {
-        List<T> newArr = clone ? new ArrayList<>(arr) : arr;
-        if (newArr.isEmpty() || newArr.size() == 1) return newArr;
-
-        HeapHelper.heapify(desc, newArr);
-        int sortedCount = 1;
-
-        while (sortedCount < newArr.size()) {
-            Utils.swap(newArr, 0, newArr.size() - sortedCount);
-            HeapHelper.siftDown(desc, newArr, 0, newArr.size() - sortedCount);
-            sortedCount++;
-        }
-
-        return newArr;
+        return heapSort(arr, Comparable::compareTo, desc, clone);
     }
 
     /**

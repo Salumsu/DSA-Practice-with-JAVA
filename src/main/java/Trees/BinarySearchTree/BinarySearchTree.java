@@ -1,21 +1,35 @@
 package Trees.BinarySearchTree;
 
+import Heap.BinaryHeap;
 import Queue.QueueAL;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class BinarySearchTree<T extends Comparable<T>> {
+/**
+ * This class requires a {@link Comparator} to define element ordering. However, if
+ * the elements implement {@link Comparable}, the {@link #create()} factory method
+ * can be used to construct a binary search tree without explicitly passing a comparator.
+ *
+ * @param <T> The type of elements in the heap.
+ */
+public class BinarySearchTree<T> {
     protected BinarySearchTreeNode<T> head;
+    final private Comparator<T> comparator;
 
-    public BinarySearchTree () {
+    public BinarySearchTree (Comparator<T> comparator) {
         this.head = null;
+        this.comparator = comparator;
     }
 
-    public BinarySearchTree (T value) {
+    public BinarySearchTree (Comparator<T> comparator, T value) {
         this.head = new BinarySearchTreeNode<T>(value);
+        this.comparator = comparator;
     }
 
-    public BinarySearchTree (T[] values) {
+    public BinarySearchTree (Comparator<T> comparator, T[] values) {
+        this.comparator = comparator;
+
         if (values.length == 0) {
             this.head = null;
         }
@@ -24,6 +38,19 @@ public class BinarySearchTree<T extends Comparable<T>> {
             this.insert(value);
         }
     }
+
+    public static <T extends Comparable<T>> BinarySearchTree<T> create () {
+        return new BinarySearchTree<T>(Comparable::compareTo);
+    }
+
+    public static <T extends Comparable<T>> BinarySearchTree<T> create (T value) {
+        return new BinarySearchTree<T>(Comparable::compareTo, value);
+    }
+
+    public static <T extends Comparable<T>> BinarySearchTree<T> create (T[] values) {
+        return new BinarySearchTree<T>(Comparable::compareTo, values);
+    }
+
 
     private void setHead (T value) {
         this.head = new BinarySearchTreeNode<T>(value);
@@ -43,7 +70,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     private void doInsert (BinarySearchTreeNode<T> curr, T value) {
-        int compareResult = curr.getValue().compareTo(value);
+        int compareResult = this.comparator.compare(curr.getValue(), value);
         if (compareResult <= 0) {
             if (curr.getRight() == null) {
                 curr.setRight(value);
@@ -69,7 +96,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     private BinarySearchTreeNode<T> doSearch (T value, BinarySearchTreeNode<T> curr) {
         if (curr == null) return null;
-        int compareResult = curr.getValue().compareTo(value);
+        int compareResult = this.comparator.compare(curr.getValue(), value);
         if (compareResult == 0) {
             return curr;
         } else if (compareResult > 0) {
@@ -88,7 +115,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     private BinarySearchTreeNode<T> doRemove(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> curr, T value, boolean isRight) {
-        int compareResult = curr.getValue().compareTo(value);
+        int compareResult = this.comparator.compare(curr.getValue(), value);
         if (compareResult != 0) {
             BinarySearchTreeNode<T> searchNode = null;
             boolean _isRight = false;
@@ -146,7 +173,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param parent The parent of the found node.
      * @param node   The found node (either successor or predecessor).
      */
-    private record SuccPredReturn <T extends Comparable<T>>(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> node) {}
+    private record SuccPredReturn <T>(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> node) {}
 
     /**
      * Finds the inorder successor of a given node.

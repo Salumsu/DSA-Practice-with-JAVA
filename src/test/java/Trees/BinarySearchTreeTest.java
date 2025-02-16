@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BinarySearchTreeTest {
     @Test
     void testEmptyTree () {
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        BinarySearchTree<Integer> bst = BinarySearchTree.create();
         ArrayList<Integer> result = bst.inOrderTraversal();
 
         assertArrayEquals(new ArrayList<Integer>().toArray(), result.toArray());
@@ -24,7 +24,7 @@ class BinarySearchTreeTest {
 
     @Test
     void testSingleInitialValue () {
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>(1);
+        BinarySearchTree<Integer> bst = BinarySearchTree.create(1);
         ArrayList<Integer> result = bst.inOrderTraversal();
 
         assertEquals(result.getFirst(), 1);
@@ -52,7 +52,7 @@ class BinarySearchTreeTest {
     @ParameterizedTest
     @MethodSource("searchCases")
     <T extends Comparable<T>> void testSearch (T[] inputArray, T[] searchInputs, T[] expectedResults) {
-        BinarySearchTree<T> bst = new BinarySearchTree<>(inputArray);
+        BinarySearchTree<T> bst = BinarySearchTree.create(inputArray);
 
         for (int i = 0; i < searchInputs.length; i++) {
             BinarySearchTreeNode<T> output = bst.search(searchInputs[i]);
@@ -131,7 +131,7 @@ class BinarySearchTreeTest {
     @ParameterizedTest
     @MethodSource("removeCases")
     <T extends Comparable<T>> void testRemove (T[]inputArray, T[] removeInputs, T[] expectedResults, T[][] expectedInorderOutput) {
-        BinarySearchTree<T> bst = new BinarySearchTree<>(inputArray);
+        BinarySearchTree<T> bst = BinarySearchTree.create(inputArray);
 
         for (int i = 0; i < removeInputs.length; i++) {
             BinarySearchTreeNode<T> res = bst.remove(removeInputs[i]);
@@ -168,7 +168,7 @@ class BinarySearchTreeTest {
     @ParameterizedTest
     @MethodSource("inOrderTraversalCases")
     <T extends Comparable<T>> void testInOrderTraversal (T[] input, T[] expectedOutput) {
-        BinarySearchTree<T> bst = new BinarySearchTree<>(input);
+        BinarySearchTree<T> bst = BinarySearchTree.create(input);
         ArrayList<T> output = bst.inOrderTraversal();
 
         assertArrayEquals(expectedOutput, output.toArray());
@@ -176,7 +176,7 @@ class BinarySearchTreeTest {
 
     @Test
     void testInOrderTraversalPrint() {
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>(new Integer[]{});
+        BinarySearchTree<Integer> bst = BinarySearchTree.create(new Integer[]{});
         ArrayList<Integer> output = bst.inOrderTraversal(true);
 
         assertNull(output);
@@ -206,7 +206,7 @@ class BinarySearchTreeTest {
     @ParameterizedTest
     @MethodSource("preOrderTraversalCases")
     <T extends Comparable<T>> void testPreOrderTraversal (T[] input, T[] expectedOutput) {
-        BinarySearchTree<T> bst = new BinarySearchTree<>(input);
+        BinarySearchTree<T> bst = BinarySearchTree.create(input);
         ArrayList<T> output = bst.preOrderTraversal();
 
         assertArrayEquals(expectedOutput, output.toArray());
@@ -214,7 +214,7 @@ class BinarySearchTreeTest {
 
     @Test
     void testPreOrderTraversalPrint() {
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>(new Integer[]{});
+        BinarySearchTree<Integer> bst = BinarySearchTree.create(new Integer[]{});
         ArrayList<Integer> output = bst.preOrderTraversal(true);
 
         assertNull(output);
@@ -244,7 +244,7 @@ class BinarySearchTreeTest {
     @ParameterizedTest
     @MethodSource("postOrderTraversalCases")
     <T extends Comparable<T>> void testPostOrderTraversal (T[] input, T[] expectedOutput) {
-        BinarySearchTree<T> bst = new BinarySearchTree<>(input);
+        BinarySearchTree<T> bst = BinarySearchTree.create(input);
         ArrayList<T> output = bst.postOrderTraversal();
 
         assertArrayEquals(expectedOutput, output.toArray());
@@ -252,7 +252,7 @@ class BinarySearchTreeTest {
 
     @Test
     void testPostOrderTraversalPrint() {
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>(new Integer[]{});
+        BinarySearchTree<Integer> bst = BinarySearchTree.create(new Integer[]{});
         ArrayList<Integer> output = bst.postOrderTraversal(true);
 
         assertNull(output);
@@ -285,7 +285,7 @@ class BinarySearchTreeTest {
     @ParameterizedTest
     @MethodSource("levelOrderTraversalCases")
     <T extends Comparable<T>> void testLevelOrderTraversal (T[] input, T[] expectedOutput) {
-        BinarySearchTree<T> bst = new BinarySearchTree<>(input);
+        BinarySearchTree<T> bst = BinarySearchTree.create(input);
         ArrayList<T> output = bst.levelOrderTraversal();
 
         assertArrayEquals(expectedOutput, output.toArray());
@@ -293,7 +293,7 @@ class BinarySearchTreeTest {
 
     @Test
     void testLevelOrderTraversalPrint() {
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>(new Integer[]{});
+        BinarySearchTree<Integer> bst = BinarySearchTree.create(new Integer[]{});
         ArrayList<Integer> output = bst.levelOrderTraversal(true);
 
         assertNull(output);
