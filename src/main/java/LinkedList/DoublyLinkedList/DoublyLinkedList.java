@@ -1,8 +1,13 @@
 package LinkedList.DoublyLinkedList;
 
 import LinkedList.LinkedListInterface;
+import LinkedList.SinglyLinkedList.SinglyLinkedList;
+import LinkedList.SinglyLinkedList.SinglyLinkedListNode;
+import utils.CompareTo;
 
-public class DoublyLinkedList<T extends Comparable<T>> implements LinkedListInterface<T> {
+import java.util.Comparator;
+
+public class DoublyLinkedList<T> implements LinkedListInterface<T> {
 
     DoublyLinkedListNode<T> head;
     DoublyLinkedListNode<T> tail;
@@ -55,7 +60,6 @@ public class DoublyLinkedList<T extends Comparable<T>> implements LinkedListInte
 
         this.tail = curr;
     }
-
 
     @Override
     public void addFirst(T value) {
@@ -114,13 +118,29 @@ public class DoublyLinkedList<T extends Comparable<T>> implements LinkedListInte
     }
 
     @Override
-    public boolean contains(T value) {
-        if (this.head == null) return false;
+    public boolean contains (T value) {
+        if ((value instanceof Comparable<?>)) {
+            @SuppressWarnings("unchecked")  // Suppress warning due to generic casting
+            Comparable<T> comparableValue = (Comparable<T>) value;
+            return _contains(value, comparableValue::compareTo);
+        }
 
-        DoublyLinkedListNode<T> curr = this.head;
-        while (curr != null) {
-            if (curr.getValue().compareTo(value) == 0) return true;
-            curr = curr.getNext();
+        throw new Error("Comparator is required since values do not extend Comparable class");
+    }
+
+    @Override
+    public boolean contains (T value, Comparator<T> comparator) {
+        return _contains(value, (a) -> comparator.compare(a, value));
+    }
+
+    private boolean _contains (T value, CompareTo<T> compareTo) {
+        if (!this.isEmpty()) {
+            DoublyLinkedListNode<T> curr = this.head;
+
+            while (curr != null) {
+                if (compareTo.apply(curr.getValue()) == 0) return true;
+                curr = curr.getNext();
+            }
         }
 
         return false;

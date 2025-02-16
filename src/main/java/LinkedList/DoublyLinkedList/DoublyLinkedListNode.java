@@ -2,7 +2,7 @@ package LinkedList.DoublyLinkedList;
 
 import LinkedList.SinglyLinkedList.SinglyLinkedListNode;
 
-public class DoublyLinkedListNode <T extends Comparable<T>> {
+public class DoublyLinkedListNode <T> {
 
     private T value;
     private DoublyLinkedListNode<T> next;

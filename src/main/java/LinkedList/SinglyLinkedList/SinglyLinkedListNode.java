@@ -1,6 +1,6 @@
 package LinkedList.SinglyLinkedList;
 
-public class SinglyLinkedListNode <T extends Comparable<T>> {
+public class SinglyLinkedListNode <T> {
     private T value;
     private SinglyLinkedListNode<T> next;
 

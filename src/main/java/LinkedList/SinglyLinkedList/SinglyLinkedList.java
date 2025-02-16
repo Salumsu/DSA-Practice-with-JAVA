@@ -1,13 +1,14 @@
 package LinkedList.SinglyLinkedList;
 
 import LinkedList.LinkedListInterface;
+import utils.CompareTo;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
-
-public class SinglyLinkedList<T extends Comparable<T>> implements LinkedListInterface<T> {
+public class SinglyLinkedList<T> implements LinkedListInterface<T> {
 
     protected SinglyLinkedListNode<T> head;
     private SinglyLinkedListNode<T> tail;
@@ -295,13 +296,28 @@ public class SinglyLinkedList<T extends Comparable<T>> implements LinkedListInte
 
     @Override
     public boolean contains (T value) {
+        if ((value instanceof Comparable<?>)) {
+            @SuppressWarnings("unchecked")  // Suppress warning due to generic casting
+            Comparable<T> comparableValue = (Comparable<T>) value;
+            return _contains(value, comparableValue::compareTo);
+        }
+
+        throw new Error("Comparator is required since values do not extend Comparable class");
+
+    }
+
+    @Override
+    public boolean contains (T value, Comparator<T> comparator) {
+        return _contains(value, (a) -> comparator.compare(a, value));
+    }
+
+    private boolean _contains (T value, CompareTo<T> compareTo) {
         if (!this.isEmpty()) {
             SinglyLinkedListNode<T> curr = this.head;
 
             while (curr != null) {
-                if (curr.getValue().compareTo(value) == 0) {
-                    return true;
-                }
+                if (compareTo.apply(curr.getValue()) == 0) return true;
+                curr = curr.getNext();
             }
         }
 

@@ -5,7 +5,7 @@ import LinkedList.SinglyLinkedList.SinglyLinkedList;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class StackLL<T extends Comparable<T>> implements StackInterface<T> {
+public class StackLL<T> implements StackInterface<T> {
     SinglyLinkedList<T> list;
 
     public StackLL () {

@@ -5,7 +5,7 @@ import LinkedList.SinglyLinkedList.SinglyLinkedList;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class QueueLL <T extends Comparable<T>> implements QueueInterface<T> {
+public class QueueLL <T> implements QueueInterface<T> {
     private SinglyLinkedList<T> list;
 
     public QueueLL () {
