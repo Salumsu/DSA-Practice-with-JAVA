@@ -171,6 +171,7 @@ class BinarySearchTreeTest {
         BinarySearchTree<T> bst = BinarySearchTree.create(input);
         ArrayList<T> output = bst.inOrderTraversal();
 
+        System.out.println(output.toString() + " : " + Arrays.toString(expectedOutput));
         assertArrayEquals(expectedOutput, output.toArray());
     }
 
