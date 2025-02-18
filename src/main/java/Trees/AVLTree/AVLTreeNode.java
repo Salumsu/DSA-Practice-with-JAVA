@@ -4,10 +4,7 @@ import Trees.BinarySearchTree.BinarySearchTreeNode;
 import Trees.BinaryTreeNode;
 
 public class AVLTreeNode<T> extends BinaryTreeNode<T> {
-    protected T value;
     protected int height;
-    AVLTreeNode<T> left;
-    AVLTreeNode<T> right;
 
     public AVLTreeNode(T value) {
         super(value);
@@ -54,19 +51,11 @@ public class AVLTreeNode<T> extends BinaryTreeNode<T> {
     }
 
     @Override
-    public void setLeft (BinaryTreeNode<T> left) {
-        this.left = (AVLTreeNode<T>) left;
-    }
-
     public void setLeft (T value) {
         this.left = new AVLTreeNode<>(value);
     }
 
     @Override
-    public void setRight (BinaryTreeNode<T> right) {
-        this.right = (AVLTreeNode<T>) right;
-    }
-
     public void setRight (T value) {
         this.right = new AVLTreeNode<>(value);
     }

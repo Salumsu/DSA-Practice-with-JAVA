@@ -30,6 +30,8 @@ public abstract class BinaryTreeNode<T> {
         this.left = left;
     }
 
+    public abstract void setLeft(T value);
+
     public BinaryTreeNode<T> getRight () {
         return this.right;
     }
@@ -37,6 +39,8 @@ public abstract class BinaryTreeNode<T> {
     public void setRight (BinaryTreeNode<T> right) {
         this.right = right;
     }
+
+    public abstract void setRight(T value);
 
     public void removeLeft() {
         this.left = null;

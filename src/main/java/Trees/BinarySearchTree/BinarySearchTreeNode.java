@@ -20,19 +20,11 @@ public class BinarySearchTreeNode <T> extends BinaryTreeNode<T> {
     }
 
     @Override
-    public void setLeft (BinaryTreeNode<T> left) {
-        this.left = (BinarySearchTreeNode<T>) left;
-    }
-
     public void setLeft (T value) {
         this.left = new BinarySearchTreeNode<>(value);
     }
 
     @Override
-    public void setRight (BinaryTreeNode<T> right) {
-        this.right = (BinarySearchTreeNode<T>) right;
-    }
-
     public void setRight (T value) {
         this.right = new BinarySearchTreeNode<>(value);
     }
