@@ -29,15 +29,6 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
         super(comparator, values);
     }
 
-    @Override
-    protected BinarySearchTreeNode<T> castNode(BinaryTreeNode<T> node) {
-        return (BinarySearchTreeNode<T>) node;
-    }
-
-    private BinarySearchTreeNode<T> getHeadNode () {
-        return (BinarySearchTreeNode<T>) this.head;
-    }
-
     public static <T extends Comparable<T>> BinarySearchTree<T> create () {
         return new BinarySearchTree<T>(Comparable::compareTo);
     }
@@ -48,6 +39,20 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
 
     public static <T extends Comparable<T>> BinarySearchTree<T> create (T[] values) {
         return new BinarySearchTree<T>(Comparable::compareTo, values);
+    }
+
+    @Override
+    protected BinarySearchTreeNode<T> castNode(BinaryTreeNode<T> node) {
+        return (BinarySearchTreeNode<T>) node;
+    }
+
+    @Override
+    protected BinarySearchTreeNode<T> newNode(T value) {
+        return new BinarySearchTreeNode<>(value);
+    }
+
+    private BinarySearchTreeNode<T> getHeadNode () {
+        return (BinarySearchTreeNode<T>) this.head;
     }
 
     private void setHead (T value) {

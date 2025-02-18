@@ -1,33 +1,20 @@
 package LinkedList.SinglyLinkedList;
 
-public class SinglyLinkedListNode <T> {
-    private T value;
-    private SinglyLinkedListNode<T> next;
+import LinkedList.LLNode;
 
+public class SinglyLinkedListNode <T> extends LLNode<T> {
     public SinglyLinkedListNode (T value) {
-        this.value = value;
-        this.next = null;
+        super(value);
     }
 
-    public SinglyLinkedListNode (T value, SinglyLinkedListNode<T> next) {
-        this.value = value;
-        this.next = next;
-    }
-
-    public T getValue () {
-        return this.value;
-    }
-
-    public void setValue (T value) {
-        this.value = value;
-    }
-
+    @Override
     public SinglyLinkedListNode<T> getNext() {
-        return this.next;
+        return (SinglyLinkedListNode<T>) super.getNext();
     }
 
-    public void setNext(SinglyLinkedListNode<T> next) {
-        this.next = next;
+    @Override
+    public void setNext(T value) {
+        this.next = new SinglyLinkedListNode<>(value);
     }
 }
 

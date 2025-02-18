@@ -20,15 +20,6 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
         super(comparator, values);
     }
 
-    @Override
-    protected AVLTreeNode<T> castNode(BinaryTreeNode<T> node) {
-        return (AVLTreeNode<T>) node;
-    }
-
-    private AVLTreeNode<T> getHeadNode () {
-        return (AVLTreeNode<T>) this.head;
-    }
-
     public static <T extends Comparable<T>> AVLTree<T> create () {
         return new AVLTree<T>(Comparable::compareTo);
     }
@@ -39,6 +30,20 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
 
     public static <T extends Comparable<T>> AVLTree<T> create (T[] values) {
         return new AVLTree<T>(Comparable::compareTo, values);
+    }
+
+    @Override
+    protected AVLTreeNode<T> castNode(BinaryTreeNode<T> node) {
+        return (AVLTreeNode<T>) node;
+    }
+
+    private AVLTreeNode<T> getHeadNode () {
+        return (AVLTreeNode<T>) this.head;
+    }
+
+    @Override
+    protected AVLTreeNode<T> newNode(T value) {
+        return new AVLTreeNode<>(value);
     }
 
     public AVLTreeNode<T> leftRotate(AVLTreeNode<T> node) {

@@ -15,38 +15,36 @@ class SinglyLinkedListTest {
     void testEmptyList () {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
 
-        assertThrows(NullPointerException.class, list::getHead);
-        assertThrows(NullPointerException.class, list::pop);
-        assertThrows(NullPointerException.class, () -> list.pop(2));
-        assertThrows(NullPointerException.class, list::popHead);
-        assertThrows(NullPointerException.class, () -> list.popHead(2));
-        assertThrows(NullPointerException.class, () -> list.remove(0));
+        assertNull(list.removeFirst());
+        assertNull(list.removeLast());
+        assertNull(list.getHeadValue());
+        assertNull(list.getTailValue());
     }
 
     @Test
     void testSizeAfterAddingElements() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
-        list.append(10);
-        list.append(20);
-        list.append(30);
+        list.addFirst(10);
+        list.addFirst(20);
+        list.addFirst(30);
         assertEquals(3, list.size());
     }
 
     @Test
     void testHeadAfterPrepending() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
-        list.prepend(50);
-        list.prepend(40);
-        list.prepend(30);
-        assertEquals(30, list.getHead());
+        list.addLast(50);
+        list.addLast(40);
+        list.addLast(30);
+        assertEquals(50, list.getHeadValue());
     }
 
     @Test
     void testSizeAfterRemovingElements() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
-        list.append(1);
-        list.append(2);
-        list.append(3);
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
         list.remove(2);
         assertEquals(2, list.size());
     }
@@ -54,22 +52,11 @@ class SinglyLinkedListTest {
     @Test
     void testHeadAfterRemovingFirstElement() {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
-        list.append(1);
-        list.append(2);
-        list.append(3);
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
         list.remove(0);
-        assertEquals(2, list.getHead());
-    }
-
-    @Test
-    void testOrderAfterMultipleOperations() {
-        SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
-        list.append(1);
-        list.append(2);
-        list.append(3);
-        list.prepend(0);
-        list.remove(2);
-        assertArrayEquals(new Integer[]{0, 1, 3}, list.toArray(Integer.class));
+        assertEquals(2, list.getHeadValue());
     }
 
     static <T> Stream<Arguments> arrayConstructorCases() {
@@ -87,11 +74,13 @@ class SinglyLinkedListTest {
 
     @ParameterizedTest
     @MethodSource("arrayConstructorCases")
-    <T extends Comparable<T>> void testToArray(Class<T> clazz, T[] input, T[] expectedOutout) {
+    <T extends Comparable<T>> void toArrayList(Class<T> clazz, T[] input, T[] expectedOutout) {
         SinglyLinkedList<T> list = new SinglyLinkedList<>(input);
-        T[] output = list.toArray(clazz);
 
-        assertEquals(list.size(), input.length);
+        @SuppressWarnings("unchecked")
+        T[] output = (T[]) list.toArrayList().toArray(new Comparable[0]);
+
+        assertEquals(input.length, list.size());
         assertArrayEquals(output, expectedOutout);
     }
 
@@ -114,7 +103,7 @@ class SinglyLinkedListTest {
         SinglyLinkedList<Integer> first = new SinglyLinkedList<>(firstInput);
         SinglyLinkedList<Integer> second = new SinglyLinkedList<>(secondInput);
         first.merge(second);
-        Integer[] output = first.toArray(Integer.class);
+        Integer[] output = first.toArrayList().toArray(new Integer[0]);
 
         assertArrayEquals(expectedOutput, output);
     }

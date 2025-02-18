@@ -1,7 +1,6 @@
 package LinkedList;
 
 import LinkedList.DoublyLinkedList.DoublyLinkedList;
-import LinkedList.SinglyLinkedList.SinglyLinkedList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -12,54 +11,77 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DoublyLinkedListTest {
-    static <T> Stream<Arguments> removeFirstCases() {
+    @Test
+    void testEmptyList () {
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+
+        assertNull(list.removeFirst());
+        assertNull(list.removeLast());
+        assertNull(list.getHeadValue());
+        assertNull(list.getTailValue());
+    }
+
+    @Test
+    void testSizeAfterAddingElements() {
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+        list.addFirst(10);
+        list.addFirst(20);
+        list.addFirst(30);
+        assertEquals(3, list.size());
+    }
+
+    @Test
+    void testHeadAfterPrepending() {
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+        list.addLast(50);
+        list.addLast(40);
+        list.addLast(30);
+        assertEquals(50, list.getHeadValue());
+    }
+
+    @Test
+    void testSizeAfterRemovingElements() {
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
+        list.remove(2);
+        assertEquals(2, list.size());
+    }
+
+    @Test
+    void testHeadAfterRemovingFirstElement() {
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
+        list.remove(0);
+        assertEquals(2, list.getHeadValue());
+    }
+
+    static <T> Stream<Arguments> arrayConstructorCases() {
         return Stream.of(
-                Arguments.of(new Integer[]{1, 2, 3}, new Integer[]{1, 2, 3, null}),
-                Arguments.of(new Double[]{1.1, 2.2, 3.3}, new Double[]{1.1, 2.2}),
-                Arguments.of(new String[]{"a", "b", "c"}, new String[]{"a"}),
-                Arguments.of(new Character[]{'x', 'y', 'z'}, new Character[]{'x', 'y', 'z'}),
-                Arguments.of(new Long[]{100L, 200L, 300L}, new Long[]{100L, 200L, 300L}),
-                Arguments.of(new Short[]{10, 20, 30}, new Short[]{10, 20, 30}),
-                Arguments.of(new Byte[]{1, 2, 3}, new Byte[]{1, 2, 3}),
-                Arguments.of(new Float[]{1.5f, 2.5f, 3.5f}, new Float[]{1.5f, 2.5f, 3.5f}),
-                Arguments.of(new Integer[]{}, new Integer[]{null, null})
+                Arguments.of(Integer.class, new Integer[]{1, 2, 3}, new Integer[]{1, 2, 3}),
+                Arguments.of(Double.class, new Double[]{1.1, 2.2, 3.3}, new Double[]{1.1, 2.2, 3.3}),
+                Arguments.of(String.class, new String[]{"a", "b", "c"}, new String[]{"a", "b", "c"}),
+                Arguments.of(Character.class, new Character[]{'x', 'y', 'z'}, new Character[]{'x', 'y', 'z'}),
+                Arguments.of(Long.class, new Long[]{100L, 200L, 300L}, new Long[]{100L, 200L, 300L}),
+                Arguments.of(Short.class, new Short[]{10, 20, 30}, new Short[]{10, 20, 30}),
+                Arguments.of(Byte.class, new Byte[]{1, 2, 3}, new Byte[]{1, 2, 3}),
+                Arguments.of(Float.class, new Float[]{1.5f, 2.5f, 3.5f}, new Float[]{1.5f, 2.5f, 3.5f})
         );
     }
 
     @ParameterizedTest
-    @MethodSource("removeFirstCases")
-    <T extends Comparable<T>> void testRemoveFirst(T[] input, T[] removeInputs) {
+    @MethodSource("arrayConstructorCases")
+    <T extends Comparable<T>> void toArrayList(Class<T> clazz, T[] input, T[] expectedOutout) {
         DoublyLinkedList<T> list = new DoublyLinkedList<>(input);
 
-        assertEquals(list.size(), input.length);
-        for (T remove : removeInputs) {
-            assertEquals(remove, list.removeFirst());
-        }
-    }
+        @SuppressWarnings("unchecked")
+        T[] output = (T[]) list.toArrayList().toArray(new Comparable[0]);
 
-    static <T> Stream<Arguments> removeLastCases() {
-        return Stream.of(
-                Arguments.of(new Integer[]{1, 2, 3}, new Integer[]{3, 2, 1, null}),
-                Arguments.of(new Double[]{1.1, 2.2, 3.3}, new Double[]{3.3, 2.2}),
-                Arguments.of(new String[]{"a", "b", "c"}, new String[]{"c"}),
-                Arguments.of(new Character[]{'x', 'y', 'z'}, new Character[]{'z', 'y', 'x'}),
-                Arguments.of(new Long[]{100L, 200L, 300L}, new Long[]{300L, 200L, 100L}),
-                Arguments.of(new Short[]{10, 20, 30}, new Short[]{30, 20, 10}),
-                Arguments.of(new Byte[]{1, 2, 3}, new Byte[]{3, 2, 1}),
-                Arguments.of(new Float[]{1.5f, 2.5f, 3.5f}, new Float[]{3.5f, 2.5f, 1.5f}),
-                Arguments.of(new Integer[]{}, new Integer[]{null, null})
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("removeLastCases")
-    <T extends Comparable<T>> void testRemoveLast(T[] input, T[] removeInputs) {
-        DoublyLinkedList<T> list = new DoublyLinkedList<>(input);
-
-        assertEquals(list.size(), input.length);
-        for (T remove : removeInputs) {
-            assertEquals(remove, list.removeLast());
-        }
+        assertEquals(input.length, list.size());
+        assertArrayEquals(output, expectedOutout);
     }
 
     static Stream<Integer[][]> mergeCases() {
@@ -78,10 +100,10 @@ class DoublyLinkedListTest {
         Integer[] secondInput = cases[1];
         Integer[] expectedOutput = cases[2];
 
-        SinglyLinkedList<Integer> first = new SinglyLinkedList<>(firstInput);
-        SinglyLinkedList<Integer> second = new SinglyLinkedList<>(secondInput);
+        DoublyLinkedList<Integer> first = new DoublyLinkedList<>(firstInput);
+        DoublyLinkedList<Integer> second = new DoublyLinkedList<>(secondInput);
         first.merge(second);
-        Integer[] output = first.toArray(Integer.class);
+        Integer[] output = first.toArrayList().toArray(new Integer[0]);
 
         assertArrayEquals(expectedOutput, output);
     }

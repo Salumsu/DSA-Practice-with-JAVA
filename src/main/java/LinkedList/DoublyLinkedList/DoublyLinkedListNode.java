@@ -1,49 +1,32 @@
 package LinkedList.DoublyLinkedList;
 
-import LinkedList.SinglyLinkedList.SinglyLinkedListNode;
+import LinkedList.DLLNode;
 
-public class DoublyLinkedListNode <T> {
+public class DoublyLinkedListNode <T> extends DLLNode<T> {
 
-    private T value;
-    private DoublyLinkedListNode<T> next;
-    private DoublyLinkedListNode<T> prev;
 
     public DoublyLinkedListNode (T value) {
-        this(value, null);
+        super(value);
     }
 
-    public DoublyLinkedListNode (T value, DoublyLinkedListNode<T> next) {
-        this(value, next, null);
-    }
-
-    public DoublyLinkedListNode (T value, DoublyLinkedListNode<T> next, DoublyLinkedListNode<T> prev) {
-        this.value = value;
-        this.next = next;
-        this.prev = prev;
-    }
-
-    public DoublyLinkedListNode<T> getPrev() {
-        return this.prev;
-    }
-
-    public void setPrev(DoublyLinkedListNode<T> prev) {
-        this.prev = prev;
-    }
-
+    @Override
     public DoublyLinkedListNode<T> getNext() {
-        return this.next;
+        return (DoublyLinkedListNode<T>) super.getNext();
     }
 
-    public void setNext(DoublyLinkedListNode<T> next) {
-        this.next = next;
+    @Override
+    public DoublyLinkedListNode<T> getPrev() {
+        return (DoublyLinkedListNode<T>) super.getPrev();
     }
 
-    public T getValue() {
-        return this.value;
+    @Override
+    public void setNext(T value) {
+        this.next = new DoublyLinkedListNode<>(value);
     }
 
-    public void setValue(T value) {
-        this.value = value;
+    @Override
+    public void setPrev(T value) {
+        this.prev = new DoublyLinkedListNode<>(value);
     }
 }
 

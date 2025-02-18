@@ -35,7 +35,7 @@ public class StackLL<T> implements StackInterface<T> {
     }
 
     public void push (T value) {
-        this.list.prepend(value);
+        this.list.addFirst(value);
     }
 
     public T pop() {
@@ -43,7 +43,7 @@ public class StackLL<T> implements StackInterface<T> {
             throw new EmptyStackException();
         }
 
-        return this.list.popHead();
+        return this.list.removeFirst();
     }
 
     public T peek() {
@@ -55,7 +55,7 @@ public class StackLL<T> implements StackInterface<T> {
             throw new EmptyStackException();
         }
 
-        return this.list.get(0);
+        return this.list.getHeadValue();
     }
 
     public ArrayList<T> toArrayList() {

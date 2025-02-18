@@ -1,170 +1,105 @@
 package LinkedList.DoublyLinkedList;
 
-import LinkedList.LinkedListInterface;
-import LinkedList.SinglyLinkedList.SinglyLinkedList;
+import LinkedList.LinkedList;
+import LinkedList.LLNode;
 import LinkedList.SinglyLinkedList.SinglyLinkedListNode;
-import utils.CompareTo;
 
-import java.util.Comparator;
-
-public class DoublyLinkedList<T> implements LinkedListInterface<T> {
-
-    DoublyLinkedListNode<T> head;
-    DoublyLinkedListNode<T> tail;
-
-    private int length;
-
+public class DoublyLinkedList<T> extends LinkedList<T, DoublyLinkedListNode<T>> {
     public DoublyLinkedList () {
-        this.head = null;
-        this.tail = null;
-        this.length = 0;
+        super();
     }
 
     public DoublyLinkedList (T value) {
-        this.head = new DoublyLinkedListNode<T>(value);
-        this.tail = this.head;
-        this.length = 1;
+        super(new DoublyLinkedListNode<>(value));
     }
 
     public DoublyLinkedList (T[] values) {
-        this.head = null;
-        if (values.length == 0) {
-            this.length = 0;
-            return;
-        }
-
-        /*
-            Other way of setting the length is by using:
-                values.size()
-            But I'm not sure if its an O(1) function, it might loop through
-            the list and count them, in that case, it would add another O(n) size
-            to this operation.
-
-            But incrementing the length each time would also add another O(n) size right?
-            I am not sure :)
-
-            PS: I had no internet when I wrote this.
-         */
-
-        DoublyLinkedListNode<T> curr = new DoublyLinkedListNode<T>(values[0]);
-        this.head = curr;
-        this.length++;
-
-        for (int i = 1; i < values.length; i++) {
-            T value = values[i];
-            DoublyLinkedListNode<T> node = new DoublyLinkedListNode<T>(value);
-            curr.setNext(node);
-            curr = curr.getNext();
-            this.length++;
-        }
-
-        this.tail = curr;
+        super(values);
     }
 
     @Override
-    public void addFirst(T value) {
-        DoublyLinkedListNode<T> node = new DoublyLinkedListNode<>(value, this.head);
-        this.head = node;
-        this.length++;
+    protected DoublyLinkedListNode<T> castNode(LLNode<T> node) {
+        return (DoublyLinkedListNode<T>) node;
+    }
+
+    @Override
+    protected DoublyLinkedListNode<T> newNode (T value) {
+        return new DoublyLinkedListNode<>(value);
     }
 
     @Override
     public void addLast(T value) {
-        DoublyLinkedListNode<T> node = new DoublyLinkedListNode<>(value);
-        if (this.head == null) this.head = node;
-        DoublyLinkedListNode<T> curr = this.head;
-
-        while (curr.getNext() != null) {
-            curr = curr.getNext();
+        DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<>(value);
+        if (this.tail != null) {
+            this.tail.setNext(newNode);
+            newNode.setPrev(this.tail);
+        } else {
+            this.head = newNode;
         }
-
-        node.setPrev(curr);
-        curr.setNext(node);
-        this.tail = node;
+        this.tail = newNode;
         this.length++;
     }
 
     @Override
     public T removeFirst() {
         if (this.head == null) return null;
+        T value = this.head.getValue();
 
-        T val = this.head.getValue();
-        this.head = this.head.getNext();
+        this.head = castNode(this.head.getNext());
+        if (this.head == null) {
+            this.tail = null;
+        } else {
+            this.head.removePrev();
+        }
         this.length--;
-        return val;
+
+        return value;
     }
 
     @Override
-    public T removeLast() {
-        if (this.head == null) return null;
+    public T remove(int index) {
+        if (index < 0 || index >= this.size() || this.head == null) return null;
+        if (index == 0) return removeFirst();
+        if (index == this.size() - 1) return removeLast();
+
         DoublyLinkedListNode<T> curr = this.head;
         DoublyLinkedListNode<T> prev = null;
 
-        while (curr.getNext() != null) {
+        int currentIndex = 0;
+        while (currentIndex < index && curr != null) {
+            currentIndex++;
             prev = curr;
-            curr = curr.getNext();
+            curr = castNode(curr.getNext());
         }
 
-        if (prev == null) {
-            this.head = null;
-            this.tail = null;
-        } else {
-            this.tail = prev;
-            prev.setNext(null);
-        }
+        if (curr == null) return null;
+
+        DoublyLinkedListNode<T> next = curr.getNext();
+        prev.setNext(next);
+        next.setPrev(prev);
 
         this.length--;
+
         return curr.getValue();
     }
 
     @Override
-    public boolean contains (T value) {
-        if ((value instanceof Comparable<?>)) {
-            @SuppressWarnings("unchecked")  // Suppress warning due to generic casting
-            Comparable<T> comparableValue = (Comparable<T>) value;
-            return _contains(value, comparableValue::compareTo);
-        }
+    public T removeLast() {
+        System.out.println("weeee");
 
-        throw new Error("Comparator is required since values do not extend Comparable class");
-    }
+        if (this.tail == null) return null;
+        System.out.println("YOHOO");
 
-    @Override
-    public boolean contains (T value, Comparator<T> comparator) {
-        return _contains(value, (a) -> comparator.compare(a, value));
-    }
-
-    private boolean _contains (T value, CompareTo<T> compareTo) {
-        if (!this.isEmpty()) {
-            DoublyLinkedListNode<T> curr = this.head;
-
-            while (curr != null) {
-                if (compareTo.apply(curr.getValue()) == 0) return true;
-                curr = curr.getNext();
-            }
-        }
-
-        return false;
-    }
-
-    public void merge (DoublyLinkedList<T> other) {
-        if (this.head == null) {
-            this.head = other.head;
+        T value = this.tail.getValue();
+        this.tail = this.tail.getPrev();
+        if (this.tail != null) {
+            this.tail.removeNext();
         } else {
-            this.tail.setNext(other.head);
-            other.head.setPrev(this.tail);
+            this.head = null;
         }
 
-        this.tail = other.tail;
-        this.length += other.size();
-    }
+        this.length--;
 
-    @Override
-    public int size() {
-        return this.length;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.size() == 0;
+        return value;
     }
 }

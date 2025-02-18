@@ -39,6 +39,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     }
 
     protected abstract Node castNode(BinaryTreeNode<T> node);
+    protected abstract Node newNode(T value);
 
     public abstract void insert (T value);
 

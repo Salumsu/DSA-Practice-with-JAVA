@@ -35,7 +35,7 @@ public class QueueLL <T> implements QueueInterface<T> {
     }
 
     public void enqueue (T value) {
-        this.list.append(value);
+        this.list.addLast(value);
     }
 
     public T dequeue() {
@@ -43,7 +43,7 @@ public class QueueLL <T> implements QueueInterface<T> {
             throw new EmptyStackException();
         }
 
-        return this.list.popHead();
+        return this.list.removeFirst();
     }
 
     public T peek() {
@@ -51,7 +51,7 @@ public class QueueLL <T> implements QueueInterface<T> {
             throw new EmptyStackException();
         }
 
-        return this.list.get(0);
+        return this.list.getHeadValue();
     }
 
     public T rear() {
@@ -59,7 +59,7 @@ public class QueueLL <T> implements QueueInterface<T> {
             throw new EmptyStackException();
         }
 
-        return this.list.getTail();
+        return this.list.getTailValue();
     }
 
     public ArrayList<T> toArrayList() {
