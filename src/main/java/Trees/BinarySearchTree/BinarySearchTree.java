@@ -59,21 +59,21 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
         this.head = new BinarySearchTreeNode<T>(value);
     }
 
-    @Override
-    public void insert (T value) {
-        this.head = this.doInsert(this.getHeadNode(), value);
-    }
-
-    private BinarySearchTreeNode<T> doInsert (BinarySearchTreeNode<T> curr, T value) {
-        if (curr == null) return new BinarySearchTreeNode<>(value);
+    protected ActionResult<T, BinarySearchTreeNode<T>> doInsert (BinarySearchTreeNode<T> curr, T value) {
+        if (curr == null) {
+            BinarySearchTreeNode<T> newNode = new BinarySearchTreeNode<>(value);
+            return new ActionResult<>(newNode, newNode);
+        }
         int compareResult = this.comparator.compare(curr.getValue(), value);
         if (compareResult <= 0) {
-            curr.setRight(doInsert(curr.getRight(), value));
+            ActionResult<T, BinarySearchTreeNode<T>> result = doInsert(curr.getRight(), value);
+            curr.setRight(result.newRoot());
         } else {
-            curr.setLeft(doInsert(curr.getLeft(), value));
+            ActionResult<T, BinarySearchTreeNode<T>> result = doInsert(curr.getLeft(), value);
+            curr.setLeft(result.newRoot());
         }
 
-        return curr;
+        return new ActionResult<>(curr, null);
     }
 
     @Override
@@ -81,32 +81,21 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
         return (BinarySearchTreeNode<T>) super.search(value);
     }
 
+    @Override
     public BinarySearchTreeNode<T> remove(T value) {
-        if (this.head == null) {
-            return null;
-        }
-
-        return this.doRemove(null, this.getHeadNode(), value, false);
+        return (BinarySearchTreeNode<T>) super.remove(value);
     }
 
-    private BinarySearchTreeNode<T> doRemove(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> curr, T value, boolean isRight) {
+    @Override
+    protected ActionResult<T, BinarySearchTreeNode<T>> doRemove(BinarySearchTreeNode<T> parent, BinarySearchTreeNode<T> curr, T value, boolean isRight) {
+        if (curr == null) return null;
         int compareResult = this.comparator.compare(curr.getValue(), value);
-        System.out.println("CURR NODE: " + curr);
         if (compareResult != 0) {
-            BinarySearchTreeNode<T> searchNode = null;
-            boolean _isRight = false;
             if (compareResult < 0) {
-                searchNode = curr.getRight();
-                _isRight = true;
+                return this.doRemove(curr, curr.getRight(), value, true);
             } else {
-                searchNode = curr.getLeft();
+                return this.doRemove(curr, curr.getLeft(), value, false);
             }
-
-            if (searchNode != null) {
-                System.out.println("SEARCH NODE: " + searchNode);
-                return this.doRemove(curr, searchNode, value, _isRight);
-            }
-            return null;
         }
 
         if (curr.getRight() != null && curr.getLeft() != null) {
@@ -115,14 +104,14 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
             if (curr == successor.parent()) {
                 curr.setRight(successor.parent().getRight().getRight());
             } else {
-                successor.parent().removeLeft();
+                successor.parent().setLeft(successor.node().getRight());
             }
             T val = curr.getValue();
             curr.setValue(successor.node().getValue());
 
             successor.node().setValue(val);
 
-            return successor.node();
+            curr = successor.node();
         } else if (curr.getRight() != null || curr.getLeft() != null) {
             BinarySearchTreeNode<T> node = curr.getRight() != null ? curr.getRight() : curr.getLeft();
             if (parent == null) {
@@ -141,6 +130,7 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
                 parent.removeLeft();
             }
         }
-        return curr;
+
+        return new ActionResult<>(parent, curr);
     }
 }

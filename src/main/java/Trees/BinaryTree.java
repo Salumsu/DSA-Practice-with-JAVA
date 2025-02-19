@@ -14,6 +14,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
      * @param node   The found node (either successor or predecessor).
      */
     protected record SuccPredReturn<T, Node extends BinaryTreeNode<T>>(Node parent, Node node) {}
+    public record ActionResult<T, Node extends BinaryTreeNode<T>>(Node newRoot, Node node) {}
 
     protected BinaryTreeNode<T> head;
     final protected Comparator<T> comparator;
@@ -41,7 +42,16 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     protected abstract Node castNode(BinaryTreeNode<T> node);
     protected abstract Node newNode(T value);
 
-    public abstract void insert (T value);
+    public Node insert (T value) {
+        System.out.println("INSERTING: " + value);
+        ActionResult<T, Node> result = doInsert(castNode(this.head), value);
+        this.head = result.newRoot();
+        System.out.println("NEW HEAD: " + this.head);
+        System.out.println("===============");
+        return result.node();
+    }
+
+    protected abstract ActionResult<T, Node> doInsert (Node curr, T value);
 
     private void replaceHead (BinaryTreeNode<T> newHead) {
         this.head = newHead;
@@ -66,6 +76,19 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
             return doSearch(value, curr.getRight());
         }
     }
+
+    public BinaryTreeNode<T> remove(T value) {
+        if (this.head == null) {
+            return null;
+        }
+
+        ActionResult<T, Node> result = this.doRemove(null, castNode(this.head), value, false);
+
+        return result != null ? result.node() : null;
+    }
+
+    protected abstract ActionResult<T, Node> doRemove(Node parent, Node curr, T value, boolean isRight);
+
 
     /**
      * Finds the inorder successor of a given node.
@@ -120,7 +143,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
         return arrayList;
     }
 
-    private void doInorderTraversal (ArrayList<T> arrayList, BinaryTreeNode<T> curr) {
+    protected void doInorderTraversal (ArrayList<T> arrayList, BinaryTreeNode<T> curr) {
         if (curr.getLeft() != null) {
             this.doInorderTraversal(arrayList, curr.getLeft());
         }
@@ -161,7 +184,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
         return arrayList;
     }
 
-    private void doPreOrderTraversal (ArrayList<T> arrayList, Node curr) {
+    protected void doPreOrderTraversal (ArrayList<T> arrayList, Node curr) {
         if (arrayList == null) {
             System.out.println(curr.getValue());
         } else {
@@ -201,7 +224,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
         return arrayList;
     }
 
-    private void doPostOrderTraversal (ArrayList<T> arrayList, Node curr) {
+    protected void doPostOrderTraversal (ArrayList<T> arrayList, Node curr) {
         if (curr.getLeft() != null) {
             this.doPostOrderTraversal(arrayList, castNode(curr.getLeft()));
         }
@@ -237,7 +260,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
         return arrayList;
     }
 
-    private void doLevelOrderTraversal (ArrayList<T> arrayList, QueueAL<Node> queue, boolean print) {
+    protected void doLevelOrderTraversal (ArrayList<T> arrayList, QueueAL<Node> queue, boolean print) {
         if (queue.isEmpty()) return;
         QueueAL<Node> tempQueue = new QueueAL<>();
         while (!queue.isEmpty()) {
