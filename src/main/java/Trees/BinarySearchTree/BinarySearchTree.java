@@ -1,12 +1,10 @@
 package Trees.BinarySearchTree;
 
-import Heap.BinaryHeap;
-import Queue.QueueAL;
 import Trees.BinaryTree;
 import Trees.BinaryTreeNode;
 
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * This class requires a {@link Comparator} to define element ordering. However, if
@@ -29,6 +27,10 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
         super(comparator, values);
     }
 
+    public BinarySearchTree (Comparator<T> comparator, List<T> values) {
+        super(comparator, values);
+    }
+
     public static <T extends Comparable<T>> BinarySearchTree<T> create () {
         return new BinarySearchTree<T>(Comparable::compareTo);
     }
@@ -38,6 +40,10 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
     }
 
     public static <T extends Comparable<T>> BinarySearchTree<T> create (T[] values) {
+        return new BinarySearchTree<T>(Comparable::compareTo, values);
+    }
+
+    public static <T extends Comparable<T>> BinarySearchTree<T> create (List<T> values) {
         return new BinarySearchTree<T>(Comparable::compareTo, values);
     }
 
@@ -51,8 +57,15 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
         return new BinarySearchTreeNode<>(value);
     }
 
-    private BinarySearchTreeNode<T> getHeadNode () {
+    @Override
+    protected BinarySearchTreeNode<T> getHeadNode () {
         return (BinarySearchTreeNode<T>) this.head;
+    }
+
+    @Override
+    public T getHeadValue () {
+        if (this.head == null) return null;
+        return this.getHeadNode().getValue();
     }
 
     private void setHead (T value) {
@@ -99,7 +112,7 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
         }
 
         if (curr.getRight() != null && curr.getLeft() != null) {
-            SuccPredReturn<T, BinarySearchTreeNode<T>> successor = this.getInorderSuccessor(curr, curr.getRight());
+            MinMaxReturn<T, BinarySearchTreeNode<T>> successor = this.getSuccessorNode(curr);
 
             if (curr == successor.parent()) {
                 curr.setRight(successor.parent().getRight().getRight());

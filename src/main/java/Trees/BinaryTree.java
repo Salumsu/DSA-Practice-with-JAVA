@@ -1,10 +1,11 @@
 package Trees;
 
 import Queue.QueueAL;
-import Trees.BinarySearchTree.BinarySearchTreeNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     /**
@@ -13,10 +14,12 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
      * @param parent The parent of the found node.
      * @param node   The found node (either successor or predecessor).
      */
-    protected record SuccPredReturn<T, Node extends BinaryTreeNode<T>>(Node parent, Node node) {}
+    protected record MinMaxReturn<T, Node extends BinaryTreeNode<T>>(Node parent, Node node) {}
+
     public record ActionResult<T, Node extends BinaryTreeNode<T>>(Node newRoot, Node node) {}
 
     protected BinaryTreeNode<T> head;
+
     final protected Comparator<T> comparator;
 
     public BinaryTree (Comparator<T> comparator) {
@@ -29,8 +32,12 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     }
 
     public BinaryTree (Comparator<T> comparator, T[] values) {
+        this(comparator, Arrays.asList(values));
+    }
+
+    public BinaryTree (Comparator<T> comparator, List<T> values) {
         this(comparator);
-        if (values.length == 0) {
+        if (values.isEmpty()) {
             this.head = null;
         }
 
@@ -40,14 +47,15 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     }
 
     protected abstract Node castNode(BinaryTreeNode<T> node);
+    protected abstract Node getHeadNode();
+    // FOR TESTING PURPOSES
+    public abstract T getHeadValue ();
+
     protected abstract Node newNode(T value);
 
     public Node insert (T value) {
-        System.out.println("INSERTING: " + value);
         ActionResult<T, Node> result = doInsert(castNode(this.head), value);
         this.head = result.newRoot();
-        System.out.println("NEW HEAD: " + this.head);
-        System.out.println("===============");
         return result.node();
     }
 
@@ -89,33 +97,52 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
 
     protected abstract ActionResult<T, Node> doRemove(Node parent, Node curr, T value, boolean isRight);
 
-
     /**
-     * Finds the inorder successor of a given node.
-     * The inorder successor is the leftmost node in the right subtree.
+     * Finds the maximum node in a given subtree.
+     * The minimum node is the leftmost node in the subtree.
      *
-     * @param parent The node being removed, from which the search starts.
-     * @param curr   The root of the right subtree.
-     * @return A {@code SuccPredReturn} containing the inorder successor and its parent.
+     * @param parent The parent of the current node.
+     * @param curr   The node to start the search from.
+     * @return A {@code MinMaxReturn} containing the minimum node and its parent.
      */
-    protected SuccPredReturn<T, Node> getInorderSuccessor(Node parent, Node curr) {
-        if (curr.getLeft() == null) return new SuccPredReturn<>(parent, curr);
+    protected MinMaxReturn<T, Node> doGetMinNode(Node parent, Node curr) {
+        if (curr.getLeft() == null) return new MinMaxReturn<>(parent, curr);
 
-        return getInorderSuccessor(curr, castNode(curr.getLeft()));
+        return doGetMinNode(curr, castNode(curr.getLeft()));
+    }
+
+    protected MinMaxReturn<T, Node> getMinNode(Node curr) {
+        return doGetMinNode(null, curr);
+    }
+
+    protected MinMaxReturn<T, Node> getSuccessorNode (Node curr) {
+        if (curr == null || curr.getRight() == null) return null;
+
+        return doGetMinNode(curr, castNode(curr.getRight()));
     }
 
     /**
-     * Finds the inorder predecessor of a given node.
-     * The inorder predecessor is the rightmost node in the left subtree.
+     * Finds the maximum node in a given subtree.
+     * The maximum node is the rightmost node in the subtree.
      *
-     * @param parent The node being removed, from which the search starts.
-     * @param curr   The root of the left subtree.
-     * @return A {@code SuccPredReturn} containing the inorder predecessor and its parent.
+     * @param parent The parent of the current node.
+     * @param curr   The node to start the search from.
+     * @return A {@code MinMaxReturn} containing the maximum node and its parent.
      */
-    protected SuccPredReturn<T, Node> getInorderPredecessor(Node parent, Node curr) {
-        if (curr.getRight() == null) return new SuccPredReturn<>(parent, curr);
+    protected MinMaxReturn<T, Node> doGetMaxNode(Node parent, Node curr) {
+        if (curr.getRight() == null) return new MinMaxReturn<>(parent, curr);
 
-        return getInorderPredecessor(curr, castNode(curr.getRight()));
+        return doGetMaxNode(curr, castNode(curr.getRight()));
+    }
+
+    protected MinMaxReturn<T, Node> getMaxNode(Node curr) {
+        return doGetMaxNode(null, curr);
+    }
+
+    protected MinMaxReturn<T, Node> getPredecessorNode (Node curr) {
+        if (curr == null || curr.getLeft() == null) return null;
+
+        return doGetMaxNode(curr, castNode(curr.getLeft()));
     }
 
     /**
@@ -165,11 +192,11 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     public ArrayList<T> preOrderTraversal () {
         return this.preOrderTraversal(false);
     }
+
     /**
      * @param print {@code true} will print the result, {@code false} will return an {@link ArrayList}.
      * @return An {@link ArrayList} if {@code print} is false, otherwise {@code null}.
      */
-
     public ArrayList<T> preOrderTraversal (boolean print) {
         ArrayList<T> arrayList = print ? null : new ArrayList<>();
 
@@ -206,6 +233,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     public ArrayList<T> postOrderTraversal () {
         return this.postOrderTraversal(false);
     }
+
     /**
      * @param print {@code true} will print the result, {@code false} will return an {@link ArrayList}.
      * @return An {@link ArrayList} if {@code print} is false, otherwise {@code null}.

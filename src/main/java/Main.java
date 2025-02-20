@@ -9,18 +9,19 @@ import Trees.BinarySearchTree.BinarySearchTree;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
-        AVLTree<Integer> bst = AVLTree.create(new Integer[]{25, 21, 20, 23, 34, 30, 31, 35});
+        int start = 10;
+        int step = -1;  // Can be positive or negative
+        long count = 5; // Number of elements
 
-        bst.checkBalance();
-        System.out.println(bst.levelOrderTraversal().toString());
+        List<Integer> list = IntStream.iterate(start, n -> n + step)
+                .limit(count)
+                .boxed()
+                .toList();
 
-        bst.remove(30);
-        bst.checkBalance();
-        bst.remove(31);
-
-        System.out.println(bst.levelOrderTraversal().toString());
+        System.out.println(list);
     }
 }

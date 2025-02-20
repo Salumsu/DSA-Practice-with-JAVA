@@ -1,11 +1,10 @@
 package Trees.AVLTree;
 
-import Queue.QueueAL;
 import Trees.BinaryTree;
 import Trees.BinaryTreeNode;
 
 import java.util.Comparator;
-import java.util.Queue;
+import java.util.List;
 
 public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
     public AVLTree (Comparator<T> comparator) {
@@ -17,6 +16,10 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
     }
 
     public AVLTree (Comparator<T> comparator, T[] values) {
+        super(comparator, values);
+    }
+
+    public AVLTree (Comparator<T> comparator, List<T> values) {
         super(comparator, values);
     }
 
@@ -32,18 +35,34 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
         return new AVLTree<T>(Comparable::compareTo, values);
     }
 
+    public static <T extends Comparable<T>> AVLTree<T> create (List<T> values) {
+        return new AVLTree<T>(Comparable::compareTo, values);
+    }
+
     @Override
     protected AVLTreeNode<T> castNode(BinaryTreeNode<T> node) {
         return (AVLTreeNode<T>) node;
     }
 
-    private AVLTreeNode<T> getHeadNode () {
+    @Override
+    protected AVLTreeNode<T> getHeadNode () {
         return (AVLTreeNode<T>) this.head;
+    }
+
+    @Override
+    public T getHeadValue() {
+        if (this.head == null) return null;
+        return this.getHeadNode().getValue();
     }
 
     @Override
     protected AVLTreeNode<T> newNode(T value) {
         return new AVLTreeNode<>(value);
+    }
+
+    public int getHeight () {
+        if (this.head == null) return 0;
+        return this.getHeadNode().getHeight() + 1;
     }
 
     public AVLTreeNode<T> leftRotate(AVLTreeNode<T> node) {
@@ -75,23 +94,18 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
 
     protected AVLTreeNode<T> balanceTree (AVLTreeNode<T> node) {
         int balanceFactor = node.getBalanceFactor();
-        System.out.println("BALANCING: " + node + ", BALANCE FACTOR: " + balanceFactor);
         if (balanceFactor < -1) {
             // ZIGZAG
             if (node.getRight().getBalanceFactor() > 0) {
-                System.out.println("RIGHT ROTATE: " + node.getRight());
 
                 node.setRight(this.rightRotate(node.getRight()));
             }
-            System.out.println("LEFT ROTATE: " + node);
 
             return this.leftRotate(node);
         } else if (balanceFactor > 1) {
             if (node.getLeft().getBalanceFactor() < 0) {
-                System.out.println("LEFT ROTATE: " + node.getLeft());
                 node.setLeft(this.leftRotate(node.getLeft()));
             }
-            System.out.println("RIGHT ROTATE: " + node);
             return this.rightRotate(node);
         }
 
@@ -155,7 +169,7 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
         }
 
         if (curr.getRight() != null && curr.getLeft() != null) {
-            SuccPredReturn<T, AVLTreeNode<T>> successor = this.getInorderSuccessor(curr, curr.getRight());
+            MinMaxReturn<T, AVLTreeNode<T>> successor = this.getSuccessorNode(curr);
 
             if (curr == successor.parent()) {
                 curr.setRight(successor.parent().getRight().getRight());
