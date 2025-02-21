@@ -58,14 +58,9 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
     }
 
     @Override
-    protected BinarySearchTreeNode<T> getHeadNode () {
-        return (BinarySearchTreeNode<T>) this.head;
-    }
-
-    @Override
     public T getHeadValue () {
         if (this.head == null) return null;
-        return this.getHeadNode().getValue();
+        return this.head.getValue();
     }
 
     private void setHead (T value) {

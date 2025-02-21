@@ -2,11 +2,12 @@ package Trees.AVLTree;
 
 import Trees.BinaryTree;
 import Trees.BinaryTreeNode;
+import Trees.SelfBalancingBinaryTree;
 
 import java.util.Comparator;
 import java.util.List;
 
-public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
+public class AVLTree<T> extends SelfBalancingBinaryTree<T, AVLTreeNode<T>> {
     public AVLTree (Comparator<T> comparator) {
         super(comparator);
     }
@@ -45,14 +46,9 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
     }
 
     @Override
-    protected AVLTreeNode<T> getHeadNode () {
-        return (AVLTreeNode<T>) this.head;
-    }
-
-    @Override
     public T getHeadValue() {
         if (this.head == null) return null;
-        return this.getHeadNode().getValue();
+        return this.head.getValue();
     }
 
     @Override
@@ -62,10 +58,10 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
 
     public int getHeight () {
         if (this.head == null) return 0;
-        return this.getHeadNode().getHeight() + 1;
+        return this.head.getHeight() + 1;
     }
 
-    public AVLTreeNode<T> leftRotate(AVLTreeNode<T> node) {
+    protected AVLTreeNode<T> leftRotate(AVLTreeNode<T> node) {
         AVLTreeNode<T> right = node.getRight();
         AVLTreeNode<T> newRight = right.getLeft();
 
@@ -78,7 +74,7 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
         return right;
     }
 
-    public AVLTreeNode<T> rightRotate(AVLTreeNode<T> node) {
+    protected AVLTreeNode<T> rightRotate(AVLTreeNode<T> node) {
         AVLTreeNode<T> left = node.getLeft();
         AVLTreeNode<T> newLeft = left.getRight();
 
@@ -205,7 +201,7 @@ public class AVLTree<T> extends BinaryTree<T, AVLTreeNode<T>> {
     }
 
     public void checkBalance () {
-        _checkBalance(this.getHeadNode());
+        _checkBalance(this.head);
     }
 
     private void _checkBalance (AVLTreeNode<T> curr) {

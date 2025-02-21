@@ -18,7 +18,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
 
     public record ActionResult<T, Node extends BinaryTreeNode<T>>(Node newRoot, Node node) {}
 
-    protected BinaryTreeNode<T> head;
+    protected Node head;
 
     final protected Comparator<T> comparator;
 
@@ -28,7 +28,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
 
     public BinaryTree (Comparator<T> comparator, BinaryTreeNode<T> head) {
         this(comparator);
-        this.head = head;
+        this.head = castNode(head);
     }
 
     public BinaryTree (Comparator<T> comparator, T[] values) {
@@ -47,7 +47,6 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     }
 
     protected abstract Node castNode(BinaryTreeNode<T> node);
-    protected abstract Node getHeadNode();
     // FOR TESTING PURPOSES
     public abstract T getHeadValue ();
 
@@ -62,7 +61,7 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     protected abstract ActionResult<T, Node> doInsert (Node curr, T value);
 
     private void replaceHead (BinaryTreeNode<T> newHead) {
-        this.head = newHead;
+        this.head = castNode(newHead);
     }
 
     public BinaryTreeNode<T> search(T value) {
