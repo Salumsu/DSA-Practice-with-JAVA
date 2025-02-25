@@ -28,6 +28,7 @@ public class RedBlackTreeNode<T> extends BinaryTreeNode<T> {
     public RedBlackTreeNode<T> getRight() {
         return (RedBlackTreeNode<T>) this.right;
     }
+
     public void toRed () {
         this.isBlack = false;
     }
@@ -36,11 +37,17 @@ public class RedBlackTreeNode<T> extends BinaryTreeNode<T> {
         this.isBlack = true;
     }
 
-    public void toggle () {
+    public void toggleColor () {
         this.isBlack = !this.isBlack;
     }
 
     public boolean isBlack () {
         return this.isBlack;
     }
+
+    public boolean isRed () {
+        return !this.isBlack;
+    }
+
+
 }

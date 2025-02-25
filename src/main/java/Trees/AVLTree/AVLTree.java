@@ -93,7 +93,6 @@ public class AVLTree<T> extends SelfBalancingBinaryTree<T, AVLTreeNode<T>> {
         if (balanceFactor < -1) {
             // ZIGZAG
             if (node.getRight().getBalanceFactor() > 0) {
-
                 node.setRight(this.rightRotate(node.getRight()));
             }
 
@@ -114,17 +113,18 @@ public class AVLTree<T> extends SelfBalancingBinaryTree<T, AVLTreeNode<T>> {
             return new ActionResult<>(newNode, newNode);
         }
         int compareResult = this.comparator.compare(curr.getValue(), value);
+        ActionResult<T, AVLTreeNode<T>> result;
         if (compareResult <= 0) {
-            ActionResult<T, AVLTreeNode<T>> result = doInsert(curr.getRight(), value);
+            result = doInsert(curr.getRight(), value);
             curr.setRight(result.newRoot());
         } else {
-            ActionResult<T, AVLTreeNode<T>> result = doInsert(curr.getLeft(), value);
+            result = doInsert(curr.getLeft(), value);
             curr.setLeft(result.newRoot());
         }
 
         curr.updateHeight();
 
-        return new ActionResult<>(balanceTree(curr), null);
+        return new ActionResult<>(balanceTree(curr), result.node());
     }
 
     @Override
@@ -144,7 +144,7 @@ public class AVLTree<T> extends SelfBalancingBinaryTree<T, AVLTreeNode<T>> {
         int compareResult = this.comparator.compare(curr.getValue(), value);
         if (compareResult != 0) {
             ActionResult<T, AVLTreeNode<T>> result;
-            if (compareResult < 0) {
+            if (compareResult <= 0) {
                 result = this.doRemove(curr, curr.getRight(), value, true);
             } else {
                 result = this.doRemove(curr, curr.getLeft(), value, false);

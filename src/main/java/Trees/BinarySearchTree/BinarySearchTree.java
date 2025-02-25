@@ -84,6 +84,33 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
         return new ActionResult<>(curr, null);
     }
 
+    public void insertWithLoop(T value) {
+        BinarySearchTreeNode<T> curr = this.head;
+        BinarySearchTreeNode<T> newNode = newNode(value);
+        if (curr == null) {
+            this.head = newNode;
+        } else {
+            while (curr != null) {
+                int compareResult = this.comparator.compare(curr.getValue(), value);
+                if (compareResult <= 0) {
+                    if (curr.getRight() == null) {
+                        curr.setRight(newNode);
+                        curr = null;
+                    } else {
+                        curr = curr.getRight();
+                    }
+                } else {
+                    if (curr.getLeft() == null) {
+                        curr.setLeft(newNode);
+                        curr = null;
+                    } else {
+                        curr = curr.getLeft();
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public BinarySearchTreeNode<T> search(T value) {
         return (BinarySearchTreeNode<T>) super.search(value);
@@ -99,7 +126,7 @@ public class BinarySearchTree<T> extends BinaryTree<T, BinarySearchTreeNode<T>> 
         if (curr == null) return null;
         int compareResult = this.comparator.compare(curr.getValue(), value);
         if (compareResult != 0) {
-            if (compareResult < 0) {
+            if (compareResult <= 0) {
                 return this.doRemove(curr, curr.getRight(), value, true);
             } else {
                 return this.doRemove(curr, curr.getLeft(), value, false);

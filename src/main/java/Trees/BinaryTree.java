@@ -53,8 +53,13 @@ public abstract class BinaryTree<T, Node extends BinaryTreeNode<T>> {
     protected abstract Node newNode(T value);
 
     public Node insert (T value) {
+        System.out.println("NEW VALUE: " + value);
         ActionResult<T, Node> result = doInsert(castNode(this.head), value);
+        System.out.println("NEW ROOT: " + result.newRoot() + " : " + result.node());
+
         this.head = result.newRoot();
+        System.out.println("NEW ROOT: " + this.head);
+
         return result.node();
     }
 
